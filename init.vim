@@ -171,7 +171,7 @@ call plug#end()
   nnoremap <silent> <c-right> :vertical resize -4<CR>
   " move to next/previous tab
   nnoremap <silent> <s-h> gT
-  nnoremap <silent> <s-h> gt
+  nnoremap <silent> <s-l> gt
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
   " Escape insert mode
@@ -290,7 +290,7 @@ call plug#end()
     " Show type information automatically when the cursor stops moving.
     " Note that the type is echoed to the Vim command line, and will overwrite
     " any other messages in this space including e.g. ALE linting messages.
-    autocmd CursorHold *.cs OmniSharpTypeLookup
+    " autocmd CursorHold *.cs OmniSharpTypeLookup
 
     " The following commands are contextual, based on the cursor position.
     autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
@@ -333,21 +333,35 @@ call plug#end()
 " }}}
 
 " Vimspector {{{
+  " packadd! vimspector
   let g:vimspector_bottombar_height=10
-  let g:vimspector_enable_mappings = 'HUMAN'
-  nnoremap <silent> <F2> <Plug>VimspectorReset
-  " F3          <Plug>VimspectorStop	Stop debugging.
-  " F4          <Plug>VimspectorRestart	Restart debugging with the same configuration.
-  " F5          <Plug>VimspectorContinue	When debugging, continue. Otherwise start debugging.
-  " F6          <Plug>VimspectorPause	Pause debuggee.
-  " F8          <Plug>VimspectorAddFunctionBreakpoint	Add a function breakpoint for the expression under cursor
-  " <leader>F8	<Plug>VimspectorRunToCursor	Run to Cursor
-  " F9          <Plug>VimspectorToggleBreakpoint	Toggle line breakpoint on the current line.
-  " <leader>F9	<Plug>VimspectorToggleConditionalBreakpoint	Toggle conditional line breakpoint or logpoint on the current line.
-  " F10         <Plug>VimspectorStepOver	Step Over
-  " F11         <Plug>VimspectorStepInto	Step Into
-  " F12         <Plug>VimspectorStepOut	Step out of current function scope
+  "let g:vimspector_enable_mappings = 'HUMAN'
 
+  " Debugging
+  nnoremap <Leader>d <Plug>VimspectorContinue	"When debugging, continue. Otherwise start debugging.
+  nnoremap <Leader>r <Plug>VimspectorRestart	"Restart debugging with the same configuration.
+  nnoremap <Leader>p <Plug>VimspectorPause	" Pause debuggee.
+  nnoremap <Leader>q <Plug>VimspectorStop	" Stop debugging.
+  nnoremap <Leader><S-q> :VimspectorReset<CR>
+  " Stepping
+  nnoremap <Leader>s <Plug>VimspectorStepOver	"Step Over
+  nnoremap <Leader>i <Plug>VimspectorStepInto	"Step Into
+  nnoremap <Leader>o <Plug>VimspectorStepOut	"Step out of current function scope
+  nnoremap <Leader>c <Plug>VimspectorRunToCursor	"Run to Cursor
+  " Breakpoints
+  nnoremap <Leader>b <Plug>VimspectorToggleBreakpoint	Toggle line breakpoint on the current line.
+  nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint	Add a function breakpoint for the expression under cursor
+  nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint	Toggle conditional line breakpoint or logpoint on the current line.
+  " Evaluate
+  nnoremap <Leader>e <Plug>VimspectorBalloonEval
+  " nnoremap <Leader>w :VimspectorWatch<cword><cr>
+  " Windows
+  nnoremap <Leader>ll :VimspectorToggleLog<cr>
+  nnoremap <Leader>lo :VimspectorShowOutput<cr>
+  nnoremap <Leader>lb <Plug>VimspectorBreakpoints
+  nnoremap <Leader>li :VimspectorDebugInfo<cr>
+
+  " vimspector.json
   syn region jsonComment start="/\*" end="\*/"
   hi link jsonCommentError Comment
   hi link jsonComment Comment
