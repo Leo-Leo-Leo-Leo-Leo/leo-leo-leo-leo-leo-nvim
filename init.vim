@@ -437,7 +437,8 @@ call plug#end()
 
 " FZF{{{
   nnoremap <S-f> :BLines<CR>
-  nnoremap <A-f> :Lines<CR>
-  nnoremap <C-f> :Buffer<CR>
-  nnoremap <C-S-F> :Files<CR>
+  nnoremap <C-f>o :Lines<CR>
+  nnoremap <C-f>b :Buffer<CR>
+  nnoremap <C-f>d :GFiles?<CR>
+  nnoremap <C-S-f> :Files<CR>
 " }}}
