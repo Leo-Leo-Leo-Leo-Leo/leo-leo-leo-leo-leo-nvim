@@ -175,7 +175,7 @@ call plug#end()
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
   " Escape insert mode
-  inoremap ;; <Esc>
+  inoremap <Leader><Tab> <Esc>
 "}}}
 
 " Easy Align {{{
@@ -436,6 +436,8 @@ call plug#end()
 " }}}
 
 " FZF{{{
-  nnoremap <S-f> :Lines<CR>
-  nnoremap <C-f> :Files<CR>
+  nnoremap <S-f> :BLines<CR>
+  nnoremap <A-f> :Lines<CR>
+  nnoremap <C-f> :Buffer<CR>
+  nnoremap <C-S-F> :Files<CR>
 " }}}
