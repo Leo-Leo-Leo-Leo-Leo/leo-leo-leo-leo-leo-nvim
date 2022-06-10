@@ -398,6 +398,11 @@ call plug#end()
 " }}}
 
 " NERDTree {{{
+  " enable line numbers
+  let NERDTreeShowLineNumbers=1
+  " make sure relative line numbers are used
+  autocmd FileType nerdtree setlocal number relativenumber
+
   nnoremap <leader>n :NERDTreeFocus<CR>
   "nnoremap <C-n> :NERDTree<CR>
   nnoremap <C-t> :NERDTreeToggle<CR>
@@ -428,4 +433,9 @@ call plug#end()
 
   " Command-mode abbreviation to replace the :edit Vim command.
   cnoreabbrev e Edit
+" }}}
+
+" FZF{{{
+  nnoremap <S-f> :Lines<CR>
+  nnoremap <C-f> :Files<CR>
 " }}}
