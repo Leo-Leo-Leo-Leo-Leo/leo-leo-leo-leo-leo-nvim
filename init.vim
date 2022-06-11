@@ -440,5 +440,5 @@ call plug#end()
   nnoremap <C-f>o :Lines<CR>
   nnoremap <C-f>b :Buffer<CR>
   nnoremap <C-f>d :GFiles?<CR>
-  nnoremap <C-S-f> :Files<CR>
+  nnoremap <C-f>a :Files<CR>
 " }}}
