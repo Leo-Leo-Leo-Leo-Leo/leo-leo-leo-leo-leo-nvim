@@ -150,6 +150,17 @@ call plug#end()
 "}}}
 
 " Keybindings {{{
+  " Save
+  nnoremap <C-s> :w<CR>
+  " Terminal
+  
+  if has('unix')
+    nnoremap <S-t> :sp<CR>:terminal<CR>:resize 13<CR>
+  else 
+    nnoremap <S-t> :sp<CR>:terminal bash -l -i<CR>:resize 13<CR>
+  endif
+
+  tnoremap <Leader><Tab> <C-\><C-n>
   " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
   inoremap <A-k> <Esc>:m .-2<CR>==gi
@@ -166,10 +177,10 @@ call plug#end()
   nnoremap <C-k> <C-w>k
   nnoremap <C-l> <C-w>l
   " resize windows
-  nnoremap <silent> <c-Up> :resize +4<CR>
-  nnoremap <silent> <c-Down> :resize -4<CR>
-  nnoremap <silent> <c-left> :vertical resize +4<CR>
-  nnoremap <silent> <c-right> :vertical resize -4<CR>
+  nnoremap <silent> <c-Up> :resize +3<CR>
+  nnoremap <silent> <c-Down> :resize -3<CR>
+  nnoremap <silent> <c-left> :vertical resize +3<CR>
+  nnoremap <silent> <c-right> :vertical resize -3<CR>
   " move to next/previous tab
   nnoremap <silent> <s-h> gT
   nnoremap <silent> <s-l> gt
@@ -370,7 +381,6 @@ call plug#end()
     nnoremap <Leader>e <Plug>VimspectorBalloonEval
     " nnoremap <Leader>w :VimspectorWatch<cword><cr>
   "}}}
-
   
   " Windows{{{
     nnoremap <Leader>ll :VimspectorToggleLog<cr>
@@ -470,14 +480,20 @@ call plug#end()
 " }}}
 
 " Fugitive{{{
-  " Search for open buffer
-  nnoremap <C-f>b :status<CR>
-  " Search current lines
-  nnoremap <S-f> :diff<CR>
-  " Search all files in directory
-  nnoremap <C-f>a :Gdiffsplit<CR>
-  " Search open buffers
-  nnoremap <C-f>o :log<CR> 
-  " Search current git status
-  nnoremap <C-f>d :blame<CR>
+  " Git stage
+  nnoremap <Leader>ga :Git add<CR>
+  " Git commit
+  nnoremap <Leader>gc Git commit<CR>
+  " Git status
+  nnoremap <Leader>gs :Git status<CR>
+  " Git diff 
+  nnoremap <Leader><S-g>d :Git diff<CR>
+  " Git diff split view on current buffer
+  nnoremap <Leader>gd :Gdiffsplit<CR>
+  " Git log
+  nnoremap <Leader>gl :Git log<CR> 
+  " Git blame (adds new buffer with annotations on left side)
+  nnoremap <Leader>gb :Git blame<CR>
+  " Git merge tool
+  nnoremap <Leader>gm :Git mergetool<CR>
 " }}}
