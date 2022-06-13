@@ -42,6 +42,7 @@ call plug#begin()
 
   " External Integration {{{
     " tmux-vim cross navigation
+    Plug 'tpope/vim-fugitive'
     if has('unix')
       Plug 'christoomey/vim-tmux-navigator'
     endif
@@ -436,9 +437,19 @@ call plug#end()
 " }}}
 
 " FZF{{{
+  " Search current lines
   nnoremap <S-f> :BLines<CR>
-  nnoremap <C-f>o :Lines<CR>
+  " Search open buffers
+  nnoremap <C-f>o :Lines<CR> 
+  " Search for open buffer
   nnoremap <C-f>b :Buffer<CR>
+  " Search current git status
   nnoremap <C-f>d :GFiles?<CR>
+  " Search all files in directory
   nnoremap <C-f>a :Files<CR>
+  " Search all files in directory
+  nnoremap <C-f>s :Snippets<CR>
+
+
+
 " }}}
