@@ -1,7 +1,6 @@
 " Polyglot {{{
   let g:polyglot_disabled = ['markdown', 'autoindent']
 " }}}
-
 " Plugin {{{
 call plug#begin()
   " Themes | Icons {{{
@@ -22,7 +21,7 @@ call plug#begin()
     Plug 'prabirshrestha/asyncomplete.vim'
     " Debugging Manager
     Plug 'puremourning/vimspector'
-
+    " Language/File packs for Vim
     Plug 'sheerun/vim-polyglot'
   "}}}
 
@@ -30,6 +29,7 @@ call plug#begin()
     Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } " Directory Explorer
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy Finder
     Plug 'junegunn/fzf.vim' " Fuzzy Finder
+    Plug 'mileszs/ack.vim' " Fuzzy Finder
     Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] } " Side by Side File editing 
     Plug 'junegunn/vim-easy-align' " Alignment
     " Status-line 
@@ -55,7 +55,6 @@ call plug#begin()
   "}}}
 call plug#end()
 "}}}
-
 " General {{{
   " Backwards Compatility
   set nocompatible                " disable compatibility to old-time vi
@@ -99,7 +98,6 @@ call plug#end()
   syntax enable
   filetype plugin indent on       " allow auto-indenting depending on file type
 "}}}
-
 " Indentation {{{
   set softtabstop=2               " see multiple spaces as tab-stops so <BS> does the right thing
   set expandtab                   " converts tabs to white space
@@ -108,7 +106,6 @@ call plug#end()
   set tabstop=2                   " number of columns occupied by a tab
   "set cc=80                      " set an 80 column border for good coding style
 "}}}
-
 " Search & Highlighting {{{
   set showmatch                   " show matching
   set hlsearch                    " highlight search
@@ -116,7 +113,6 @@ call plug#end()
   set ignorecase                  " case insensitive
   set smartcase                   " smart case searching 
 "}}}
-
 " Styling {{{
   " Theme
   if (has("termguicolors"))
@@ -148,7 +144,6 @@ call plug#end()
     autocmd ColorScheme * highlight link ALEInfoSign    Identifier
   augroup END
 "}}}
-
 " Keybindings {{{
   " Save
   nnoremap <C-s> :w<CR>
@@ -189,7 +184,6 @@ call plug#end()
   " Escape insert mode
   inoremap <Leader><Tab> <Esc>
 "}}}
-
 " Easy Align {{{
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
@@ -197,7 +191,6 @@ call plug#end()
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
   nmap ga <Plug>(EasyAlign)
 "}}}
-
 " ALE: {{{
   let g:ale_sign_error = 'E'
   let g:ale_sign_warning = 'W'
@@ -207,7 +200,6 @@ call plug#end()
 
   let g:ale_linters = { 'cs': ['OmniSharp'] }
 " }}}
-
 " Sharpenup: {{{
   " All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
   " :OmniSharpGotoDefinition
@@ -221,7 +213,6 @@ call plug#end()
     autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
   augroup END
 " }}}
-
 " Lightline: {{{
   let g:shades_of_purple_lightline = 1
   let g:lightline = {
@@ -261,7 +252,6 @@ call plug#end()
   let g:lightline#ale#indicator_errors = "\uf05e "
   let g:lightline#ale#indicator_ok = "\uf00c "
 " }}}
-
 " OmniSharp: {{{
 
   let g:OmniSharp_server_use_net6 = 1
@@ -338,12 +328,10 @@ call plug#end()
     autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
   augroup END
 " }}}
-
 " Asyncomplete: {{{
   let g:asyncomplete_auto_popup = 1
   " let g:asyncomplete_auto_completeopt = 0
 " }}}
-
 " Vimspector {{{
   " packadd! vimspector
   let g:vimspector_bottombar_height=10
@@ -395,11 +383,9 @@ call plug#end()
     hi link jsonComment Comment
   "}}}
 "}}}
-
 " FixCursorHold{{{
-  let g:cursorhold_updatetime = 100
+  let g:cursorhold_updatetime = 500
 " }}}
-
 " Dev-Icons{{{
   let g:WebDevIconsUnicodeDecorateFolderNodes = 1
   let g:DevIconsEnableFoldersOpenClose = 1
@@ -425,7 +411,6 @@ call plug#end()
   let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.npmrc'] = ''
   let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['src'] = ''
 " }}}
-
 " NERDTree {{{
   " enable line numbers
   let NERDTreeShowLineNumbers=1
@@ -463,7 +448,6 @@ call plug#end()
   " Command-mode abbreviation to replace the :edit Vim command.
   cnoreabbrev e Edit
 " }}}
-
 " FZF{{{
   " Search current lines
   nnoremap <S-f> :BLines<CR>
@@ -475,13 +459,17 @@ call plug#end()
   nnoremap <C-f>d :GFiles?<CR>
   " Search all files in directory
   nnoremap <C-f>a :Files<CR>
-  " Search all files in directory
+  " Search all snippets in directory
   nnoremap <C-f>s :Snippets<CR>
 " }}}
-
+" Ack/Ag{{{
+    let g:ackprg = 'ag --vimgrep'
+  " Search all file contents in directory
+  nnoremap <C-f>e :Ag<CR>
+" }}}
 " Fugitive{{{
   " Git stage
-  nnoremap <Leader>ga :Git add<CR>
+  nnoremap <Leader>ga :Git add .<CR>
   " Git commit
   nnoremap <Leader>gc Git commit<CR>
   " Git status
