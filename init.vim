@@ -338,34 +338,52 @@ call plug#end()
   let g:vimspector_bottombar_height=10
   "let g:vimspector_enable_mappings = 'HUMAN'
 
-  " Debugging
-  nnoremap <Leader>d <Plug>VimspectorContinue	"When debugging, continue. Otherwise start debugging.
-  nnoremap <Leader>r <Plug>VimspectorRestart	"Restart debugging with the same configuration.
-  nnoremap <Leader>p <Plug>VimspectorPause	" Pause debuggee.
-  nnoremap <Leader>q <Plug>VimspectorStop	" Stop debugging.
-  nnoremap <Leader><S-q> :VimspectorReset<CR>
-  " Stepping
-  nnoremap <Leader>s <Plug>VimspectorStepOver	"Step Over
-  nnoremap <Leader>i <Plug>VimspectorStepInto	"Step Into
-  nnoremap <Leader>o <Plug>VimspectorStepOut	"Step out of current function scope
-  nnoremap <Leader>c <Plug>VimspectorRunToCursor	"Run to Cursor
-  " Breakpoints
-  nnoremap <Leader>b <Plug>VimspectorToggleBreakpoint	Toggle line breakpoint on the current line.
-  nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint	Add a function breakpoint for the expression under cursor
-  nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint	Toggle conditional line breakpoint or logpoint on the current line.
-  " Evaluate
-  nnoremap <Leader>e <Plug>VimspectorBalloonEval
-  " nnoremap <Leader>w :VimspectorWatch<cword><cr>
-  " Windows
-  nnoremap <Leader>ll :VimspectorToggleLog<cr>
-  nnoremap <Leader>lo :VimspectorShowOutput<cr>
-  nnoremap <Leader>lb <Plug>VimspectorBreakpoints
-  nnoremap <Leader>li :VimspectorDebugInfo<cr>
+  " Debugging{{{
+    nnoremap <Leader>d <Plug>VimspectorContinue	"When debugging, continue. Otherwise start debugging.
+    nnoremap <Leader>r <Plug>VimspectorRestart	"Restart debugging with the same configuration.
+    nnoremap <Leader>p <Plug>VimspectorPause	" Pause debuggee.
+    nnoremap <Leader>q <Plug>VimspectorStop	" Stop debugging.
+    nnoremap <Leader><S-q> :VimspectorReset<CR>
+  "}}}
+  
+  " Stepping{{{
+    "Step Over
+    nnoremap <Leader>s <Plug>VimspectorStepOver	
+    "Step Into
+    nnoremap <Leader>i <Plug>VimspectorStepInto	
+    "Step out of current function scope
+    nnoremap <Leader>o <Plug>VimspectorStepOut	
+    "Run to Cursor
+    nnoremap <Leader>c <Plug>VimspectorRunToCursor	
+  "}}}
+  
+  " Breakpoints{{{
+    "Toggle line breakpoint on the current line.
+    nnoremap <Leader>b <Plug>VimspectorToggleBreakpoint	
+    "Add a function breakpoint for the expression under cursor
+    nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint	
+    "Toggle conditional line breakpoint or logpoint on the current line.
+    nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint	
+  "}}}
 
-  " vimspector.json
-  syn region jsonComment start="/\*" end="\*/"
-  hi link jsonCommentError Comment
-  hi link jsonComment Comment
+  " Evaluate{{{
+    nnoremap <Leader>e <Plug>VimspectorBalloonEval
+    " nnoremap <Leader>w :VimspectorWatch<cword><cr>
+  "}}}
+
+  
+  " Windows{{{
+    nnoremap <Leader>ll :VimspectorToggleLog<cr>
+    nnoremap <Leader>lo :VimspectorShowOutput<cr>
+    nnoremap <Leader>lb <Plug>VimspectorBreakpoints
+    nnoremap <Leader>li :VimspectorDebugInfo<cr>
+  "}}}
+
+  " vimspector.json{{{
+    syn region jsonComment start="/\*" end="\*/"
+    hi link jsonCommentError Comment
+    hi link jsonComment Comment
+  "}}}
 "}}}
 
 " FixCursorHold{{{
@@ -449,7 +467,17 @@ call plug#end()
   nnoremap <C-f>a :Files<CR>
   " Search all files in directory
   nnoremap <C-f>s :Snippets<CR>
+" }}}
 
-
-
+" Fugitive{{{
+  " Search for open buffer
+  nnoremap <C-f>b :status<CR>
+  " Search current lines
+  nnoremap <S-f> :diff<CR>
+  " Search all files in directory
+  nnoremap <C-f>a :Gdiffsplit<CR>
+  " Search open buffers
+  nnoremap <C-f>o :log<CR> 
+  " Search current git status
+  nnoremap <C-f>d :blame<CR>
 " }}}
