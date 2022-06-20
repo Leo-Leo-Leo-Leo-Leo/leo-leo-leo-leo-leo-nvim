@@ -384,7 +384,7 @@ call plug#end()
   "}}}
 "}}}
 " FixCursorHold{{{
-  let g:cursorhold_updatetime = 500
+  let g:cursorhold_updatetime = 3000 
 " }}}
 " Dev-Icons{{{
   let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -461,21 +461,22 @@ call plug#end()
   nnoremap <C-f>a :Files<CR>
   " Search all snippets in directory
   nnoremap <C-f>s :Snippets<CR>
-" }}}
-" Ack/Ag{{{
-    let g:ackprg = 'ag --vimgrep'
+  
+" grep/ack/ag{{{
+  let g:ackprg = 'ag --vimgrep'
   " Search all file contents in directory
-  nnoremap <C-f>e :Ag<CR>
+  nnoremap <C-f>e :Rg<CR>
+  "}}}
 " }}}
 " Fugitive{{{
   " Git stage
-  nnoremap <Leader>ga :Git add .<CR>
+  nnoremap <Leader>ga :Git add input('git add: ')<CR>
   " Git commit
-  nnoremap <Leader>gc Git commit<CR>
+  nnoremap <Leader>gc Git commit input('git commit: ')<CR>
   " Git status
   nnoremap <Leader>gs :Git status<CR>
   " Git diff 
-  nnoremap <Leader><S-g>d :Git diff<CR>
+  " nnoremap <Leader><S-g>d :Git diff<CR>
   " Git diff split view on current buffer
   nnoremap <Leader>gd :Gdiffsplit<CR>
   " Git log
