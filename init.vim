@@ -154,7 +154,9 @@ call plug#end()
   else 
     nnoremap <S-t> :sp<CR>:terminal bash -l -i<CR>:resize 13<CR>
   endif
-
+  
+  " Escape insert mode
+  inoremap <Tab> <Esc>
   tnoremap <Esc> <C-\><C-n>
   " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -181,9 +183,7 @@ call plug#end()
   nnoremap <silent> <s-l> gt
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
-  " Escape insert mode
-  inoremap <Esc> <Esc>
-"}}}
+  "}}}
 " Easy Align {{{
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
