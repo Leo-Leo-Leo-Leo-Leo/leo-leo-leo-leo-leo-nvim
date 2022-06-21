@@ -182,7 +182,7 @@ call plug#end()
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
   " Escape insert mode
-  inoremap <Leader><Tab> <Esc>
+  inoremap <Esc> <Esc>
 "}}}
 " Easy Align {{{
   " Start interactive EasyAlign in visual mode (e.g. vipga)
