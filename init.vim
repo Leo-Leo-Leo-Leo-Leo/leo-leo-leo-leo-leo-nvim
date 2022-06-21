@@ -155,7 +155,7 @@ call plug#end()
     nnoremap <S-t> :sp<CR>:terminal bash -l -i<CR>:resize 13<CR>
   endif
 
-  tnoremap <Leader><Tab> <C-\><C-n>
+  tnoremap <Esc> <C-\><C-n>
   " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
   inoremap <A-k> <Esc>:m .-2<CR>==gi
