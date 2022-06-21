@@ -156,8 +156,8 @@ call plug#end()
   endif
   
   " Escape insert mode
-  inoremap <Tab> <Esc>
-  tnoremap <Tab> <C-\><C-n>
+  inoremap <Tab><Backspace> <Esc>
+  tnoremap <Esc> <C-\><C-n>
   " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
   inoremap <A-k> <Esc>:m .-2<CR>==gi
