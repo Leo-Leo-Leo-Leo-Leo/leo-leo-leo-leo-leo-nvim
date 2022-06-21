@@ -461,7 +461,9 @@ call plug#end()
   nnoremap <C-f>a :Files<CR>
   " Search all snippets in directory
   nnoremap <C-f>s :Snippets<CR>
-  
+  " Search all marks in buffers
+  nnoremap <C-f>m :Marks<CR>
+
 " grep/ack/ag{{{
   let g:ackprg = 'ag --vimgrep'
   " Search all file contents in directory
