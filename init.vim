@@ -86,6 +86,7 @@ call plug#end()
   set relativenumber              " add line numbers
   set cursorline                  " highlight current cursor-line
   set statusline=2
+  set signcolumn=yes
 
   " Folding
   set foldmethod=marker
