@@ -452,24 +452,24 @@ call plug#end()
 " }}}
 " FZF{{{
   " Search current lines
-  nnoremap <S-f> :BLines<CR>
+  nnoremap <Leader>fl :BLines<CR>
   " Search open buffers
-  nnoremap <C-f>o :Lines<CR> 
+  nnoremap <Leader>fo :Lines<CR> 
   " Search for open buffer
-  nnoremap <C-f>b :Buffer<CR>
+  nnoremap <Leader>fb :Buffer<CR>
   " Search current git status
-  nnoremap <C-f>d :GFiles?<CR>
+  nnoremap <Leader>fd :GFiles?<CR>
   " Search all files in directory
-  nnoremap <C-f>a :Files<CR>
+  nnoremap <Leader>fa :Files<CR>
   " Search all snippets in directory
-  nnoremap <C-f>s :Snippets<CR>
+  nnoremap <Leader>fs :Snippets<CR>
   " Search all marks in buffers
-  nnoremap <C-f>m :Marks<CR>
+  nnoremap <Leader>fm :Marks<CR>
 
 " grep/ack/ag{{{
   let g:ackprg = 'ag --vimgrep'
   " Search all file contents in directory
-  nnoremap <C-f>e :Rg<CR>
+  nnoremap <Leader>fe :Rg<CR>
   "}}}
 " }}}
 " Fugitive{{{
