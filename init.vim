@@ -421,10 +421,10 @@ call plug#end()
   " make sure relative line numbers are used
   autocmd FileType nerdtree setlocal number relativenumber
 
-  nnoremap <Leader>nf :NERDTreeFocus<CR>
+  nnoremap <Leader>nn :NERDTreeFocus<CR>
   "nnoremap <Leader>nf :NERDTree<CR>
   nnoremap <Leader>nt :NERDTreeToggle<CR>
-  nnoremap <Leader>nn :NERDTreeFind<CR>
+  nnoremap <Leader>nf :NERDTreeFind<CR>
 
   " Function to open the file or NERDTree or netrw.
   "   Returns: 1 if either file explorer was opened; otherwise, 0.
