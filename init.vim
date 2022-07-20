@@ -107,7 +107,7 @@ call plug#end()
   set shiftwidth=2                " width for auto-indents
   set autoindent                  " indent a new line the same amount as the line just typed
   set tabstop=2                   " number of columns occupied by a tab
-  "set cc=80                      " set an 80 column border for good coding style
+  set cc=80                      " set an 80 column border for good coding style
 "}}}
 " Search & Highlighting {{{
   set showmatch                   " show matching
@@ -150,15 +150,11 @@ call plug#end()
 " Keybindings {{{
   " Save
   nnoremap <C-s> :w<CR>
-  " Terminal
-  
-  if has('unix')
-    nnoremap <S-t> :sp<CR>:terminal<CR>:resize 13<CR>
-  else 
-    nnoremap <S-t> :sp<CR>:terminal bash -l -i<CR>:resize 13<CR>
-  endif
-  
-    " move line or visually selected block - alt+j/k
+  " Search selected text
+  vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+  vnoremap ?? y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+  " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
   inoremap <A-k> <Esc>:m .-2<CR>==gi
   vnoremap <A-j> :m '>+1<CR>gv=gv
