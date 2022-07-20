@@ -556,5 +556,3 @@ call plug#end()
   let g:NERDToggleCheckAllLines = 1
 
 " }}}
-
-' test commit
