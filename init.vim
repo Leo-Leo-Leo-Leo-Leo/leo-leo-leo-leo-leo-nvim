@@ -4,8 +4,11 @@
 " Plugin {{{
 call plug#begin()
   " Themes | Icons {{{
+    Plug 'dracula/vim' " Theme
+    Plug 'morhetz/gruvbox' " Theme
     Plug 'Rigellute/shades-of-purple.vim' " Theme
-    Plug 'mhinz/vim-startify' " Nice Start Screen
+    Plug 'altercation/vim-colors-solarized' " Theme
+    " Plug 'mhinz/vim-startify' " Nice Start Screen
     Plug 'ryanoasis/vim-devicons' " Icons
     Plug 'vim-airline/vim-airline' " Details for bar and tabs
     Plug 'vim-airline/vim-airline-themes'
@@ -25,6 +28,9 @@ call plug#begin()
     Plug 'sheerun/vim-polyglot'
     " Commenting
     Plug 'preservim/nerdcommenter'
+    " Symbol Hopping
+    Plug 'https://github.com/adelarsq/vim-matchit'
+
   "}}}
 
   " Tools {{{
@@ -37,9 +43,16 @@ call plug#begin()
     " Status-line 
     Plug 'itchyny/lightline.vim'
     Plug 'maximbaz/lightline-ale'
-
     "Community Bug Fix
     Plug 'antoinemadec/FixCursorHold.nvim'
+    
+    " Symbol List
+    Plug 'tc50cal/vim-taglist'
+    " Paired Symbol Manipulation 
+    Plug 'tpope/vim-surround'
+    Plug 'frazrepo/vim-rainbow' " Rainbow Parenthesis
+    Plug 'jiangmiao/auto-pairs' " Auto insert and Delete of pair symbols
+    Plug 'jisaacks/GitGutter' " Icons for file editing
   "}}}
 
   " External Integration {{{
@@ -84,6 +97,7 @@ call plug#end()
     set shell=/usr/bin/fish
   endif
   set wildmode=longest,list       " get bash-like tab completions
+  set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set number                      " add line numbers
   set relativenumber              " add line numbers
   set cursorline                  " highlight current cursor-line
@@ -150,6 +164,10 @@ call plug#end()
 " Keybindings {{{
   " Save
   nnoremap <C-s> :w<CR>
+  inoremap <C-s> <esc>:w<CR>
+  " Quit
+  nnoremap <C-q> :q<CR>
+  inoremap <C-q> <esc>:q<CR>
   " Search selected text
   vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
   vnoremap ?? y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -417,36 +435,58 @@ call plug#end()
   " make sure relative line numbers are used
   autocmd FileType nerdtree setlocal number relativenumber
 
-  nnoremap <Leader>nn :NERDTreeFocus<CR>
-  "nnoremap <Leader>nf :NERDTree<CR>
+  nnoremap <Leader>nn :NERDTreeMirror<CR>:NERDTreeFocus<CR>
   nnoremap <Leader>nt :NERDTreeToggle<CR>
   nnoremap <Leader>nf :NERDTreeFind<CR>
+ 
+  " NERDTree On-Start{{{
+    " Start NERDTree. If a file is specified, move the cursor to its window.
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 
-  " Function to open the file or NERDTree or netrw.
-  "   Returns: 1 if either file explorer was opened; otherwise, 0.
-  function! s:OpenFileOrExplorer(...)
-      if a:0 == 0 || a:1 == ''
-          NERDTree
-      elseif filereadable(a:1)
-          execute 'edit '.a:1
-          return 0
-      elseif a:1 =~? '^\(scp\|ftp\)://' " Add other protocols as needed.
-          execute 'Vexplore '.a:1
-      elseif isdirectory(a:1)
-          execute 'NERDTree '.a:1
-      endif
-      return 1
-  endfunction
+    " Start NERDTree when Vim starts with a directory argument.
+    autocmd StdinReadPre  let s:std_in=1
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+      \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+  " }}}
 
-  " Auto commands to handle OS commandline arguments
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc()==1 && !exists('s:std_in') | if <SID>OpenFileOrExplorer(argv()[0]) | wincmd p | enew | wincmd p | endif | endif
+  " Persistent NERDTree Buffers {{{
+    " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+    " autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    "     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
-  " Command to call the OpenFileOrExplorer function.
-  command! -n=? -complete=file -bar Edit :call <SID>OpenFileOrExplorer('<args>')
+    " Open the existing NERDTree on each new tab.
+    " autocmd BufWinEnter silent NERDTreeMirror
+  " }}}
 
-  " Command-mode abbreviation to replace the :edit Vim command.
-  cnoreabbrev e Edit
+  " Ssh NERDTree{{{
+    " Function to open the file or NERDTree or netrw.
+    "   Returns: 1 if either file explorer was opened; otherwise, 0.
+    function! s:OpenFileOrExplorer(...)
+        if a:0 == 0 || a:1 == ''
+            NERDTree
+        elseif filereadable(a:1)
+            execute 'edit '.a:1
+            return 0
+        elseif a:1 =~? '^\(scp\|ftp\)://' " Add other protocols as needed.
+            execute 'Vexplore '.a:1
+        elseif isdirectory(a:1)
+            execute 'NERDTree '.a:1
+        endif
+        return 1
+    endfunction
+
+    " Auto commands to handle OS commandline arguments
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc()==1 && !exists('s:std_in') | if <SID>OpenFileOrExplorer(argv()[0]) | wincmd p | enew | wincmd p | endif | endif
+
+    " Command to call the OpenFileOrExplorer function.
+    command! -n=? -complete=file -bar Edit :call <SID>OpenFileOrExplorer('<args>')
+
+    " Command-mode abbreviation to replace the :edit Vim command.
+    cnoreabbrev e Edit
+  " }}}
+
 " }}}
 " FZF{{{
   " Search current lines
