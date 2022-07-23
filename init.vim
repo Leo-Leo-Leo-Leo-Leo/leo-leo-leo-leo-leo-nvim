@@ -97,6 +97,7 @@ call plug#end()
     set shell=/usr/bin/fish
   endif
   set wildmode=longest,list       " get bash-like tab completions
+  set wildmenu
   set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set number                      " add line numbers
   set relativenumber              " add line numbers
