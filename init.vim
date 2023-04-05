@@ -357,42 +357,45 @@ call plug#end()
   "let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
-    nnoremap <Leader>d <Plug>VimspectorContinue	"When debugging, continue. Otherwise start debugging.
-    nnoremap <Leader>r <Plug>VimspectorRestart	"Restart debugging with the same configuration.
-    nnoremap <Leader>p <Plug>VimspectorPause	" Pause debuggee.
-    nnoremap <Leader>q <Plug>VimspectorStop	" Stop debugging.
+    nnoremap <Leader>d :call vimspector#Continue()<CR>	"When debugging, continue. Otherwise start debugging.
+    nnoremap <Leader>r :call vimspector#Restart()<CR>	"Restart debugging with the same configuration.
+    nnoremap <Leader>p :call vimspector#Pause()<CR>	" Pause debuggee.
+    nnoremap <Leader>q :call vimspector#Stop()<CR>	" Stop debugging.
     nnoremap <Leader><S-q> :VimspectorReset<CR>
   "}}}
   
   " Stepping{{{
     "Step Over
-    nnoremap <Leader>s <Plug>VimspectorStepOver	
+    nnoremap <Leader>s :call vimspector#StepOver()<CR>
     "Step Into
-    nnoremap <Leader>i <Plug>VimspectorStepInto	
+    nnoremap <Leader>i :call vimspector#StepInto()<CR>	
     "Step out of current function scope
-    nnoremap <Leader>o <Plug>VimspectorStepOut	
+    nnoremap <Leader>o :call vimspector#StepOut()<CR>
     "Run to Cursor
-    nnoremap <Leader>h <Plug>VimspectorRunToCursor	
+    nnoremap <Leader>h :call vimspector#RunToCursor()<CR>
   "}}}
   
   " Breakpoints{{{
     "Toggle line breakpoint on the current line.
-    nnoremap <Leader>b <Plug>VimspectorToggleBreakpoint	
+    nnoremap <Leader>b :call vimspector#ToggleBreakpoint()<CR>
     "Add a function breakpoint for the expression under cursor
-    nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint	
+    nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint
     "Toggle conditional line breakpoint or logpoint on the current line.
-    nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint	
+    nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint
   "}}}
 
   " Evaluate{{{
     nnoremap <Leader>e <Plug>VimspectorBalloonEval
-    " nnoremap <Leader>w :VimspectorWatch<cword><cr>
+    xmap <Leader>e <Plug>VimspectorBalloonEval
+
+    nnoremap <Leader>w :VimspectorWatch<cword><cr>
+    xmap <Leader>w :VimspectorWatch<cexpr><cr>
   "}}}
   
   " Windows{{{
     nnoremap <Leader>ll :VimspectorToggleLog<cr>
     nnoremap <Leader>lo :VimspectorShowOutput<cr>
-    nnoremap <Leader>lb <Plug>VimspectorBreakpoints
+    nnoremap <Leader>lb :call vimspector#ListBreakpoints()<CR>
     nnoremap <Leader>li :VimspectorDebugInfo<cr>
   "}}}
 
