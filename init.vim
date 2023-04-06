@@ -3,56 +3,74 @@
 " }}}
 " Plugin {{{
 call plug#begin()
-  " Themes | Icons {{{
-    Plug 'dracula/vim' " Theme
-    Plug 'morhetz/gruvbox' " Theme
-    Plug 'Rigellute/shades-of-purple.vim' " Theme
-    Plug 'altercation/vim-colors-solarized' " Theme
-    " Plug 'mhinz/vim-startify' " Nice Start Screen
-    Plug 'ryanoasis/vim-devicons' " Icons
-    Plug 'vim-airline/vim-airline' " Details for bar and tabs
-    Plug 'vim-airline/vim-airline-themes'
-  "}}}
+  
+  " GUI {{{
+    " Themes {{{
+      Plug 'dracula/vim' " Theme
+      Plug 'morhetz/gruvbox' " Theme
+      Plug 'Rigellute/shades-of-purple.vim' " Theme
+      Plug 'altercation/vim-colors-solarized' " Theme
+    "}}}
+    " Icons {{{
+      Plug 'ryanoasis/vim-devicons' " Icons
+    " }}}
+    " Menus {{{
+      " Start Screen
+      " Plug 'mhinz/vim-startify'       
+      
+      " Status-line 
+      Plug 'itchyny/lightline.vim'
+      Plug 'maximbaz/lightline-ale'
+      " Plug 'vim-airline/vim-airline' " Details for bar and tabs
+      " Plug 'vim-airline/vim-airline-themes'
+
+      " Directory Explorer
+      Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }       
+      " Debugging Manager
+      Plug 'puremourning/vimspector'
+      
+      " }}}
+  " }}}
 
   " Language Integration{{{
+    " Language/File packs for Vim
+    Plug 'sheerun/vim-polyglot'
+    " DotNet Debug Server
     Plug 'OmniSharp/omnisharp-vim'
     " Mappings, code-actions available flag and statusline integration
     Plug 'nickspoons/vim-sharpenup'
     " Linting
     Plug 'dense-analysis/ale'
-    " Completion Manager
+    " Typing Completion Manager
     Plug 'prabirshrestha/asyncomplete.vim'
-    " Debugging Manager
-    Plug 'puremourning/vimspector'
-    " Language/File packs for Vim
-    Plug 'sheerun/vim-polyglot'
+    
     " Commenting
     Plug 'preservim/nerdcommenter'
+    
     " Symbol Hopping
-    Plug 'https://github.com/adelarsq/vim-matchit'
+    " Plug 'adelarsq/vim-matchit'
+    
+    " Paired Symbol Manipulation
+    Plug 'tpope/vim-surround' 
+    " Rainbow Parenthesis
+    " Plug 'frazrepo/vim-rainbow' 
+    " Auto insert and Delete of pair symbols
+    Plug 'jiangmiao/auto-pairs'   
 
+    Plug 'junegunn/vim-easy-align' " Alignment
   "}}}
 
   " Tools {{{
-    Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } " Directory Explorer
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy Finder
-    Plug 'junegunn/fzf.vim' " Fuzzy Finder
-    Plug 'mileszs/ack.vim' " Fuzzy Finder
+    " Fuzzy Finder
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'mileszs/ack.vim'
+
     Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] } " Side by Side File editing 
-    Plug 'junegunn/vim-easy-align' " Alignment
-    " Status-line 
-    Plug 'itchyny/lightline.vim'
-    Plug 'maximbaz/lightline-ale'
-    "Community Bug Fix
-    Plug 'antoinemadec/FixCursorHold.nvim'
-    
-    " Symbol List
-    Plug 'tc50cal/vim-taglist'
-    " Paired Symbol Manipulation 
-    Plug 'tpope/vim-surround'
-    Plug 'frazrepo/vim-rainbow' " Rainbow Parenthesis
-    Plug 'jiangmiao/auto-pairs' " Auto insert and Delete of pair symbols
-    Plug 'jisaacks/GitGutter' " Icons for file editing
+
+    Plug 'antoinemadec/FixCursorHold.nvim' "Community Bug Fix
+    Plug 'tc50cal/vim-taglist' " Symbol List
+    Plug 'airblade/vim-gitgutter' " Icons for file editing
   "}}}
 
   " External Integration {{{
@@ -96,14 +114,21 @@ call plug#end()
   if has('unix')
     set shell=/usr/bin/fish
   endif
-  set wildmode=longest,list       " get bash-like tab completions
-  set wildmenu
-  set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set number                      " add line numbers
   set relativenumber              " add line numbers
   set cursorline                  " highlight current cursor-line
   set statusline=2
   set signcolumn=yes
+  set wildmenu
+  set wildmode=longest,list       " get bash-like tab completions
+  set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
+  set completeopt=longest,menuone,preview
+  set previewheight=7
+
+  if &term =~ '256color'
+  " disable Background Color Erase (BCE)
+      set t_ut=
+  endif
 
   " Folding
   set foldmethod=marker
@@ -222,7 +247,7 @@ call plug#end()
 " Sharpenup: {{{
   " All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
   " :OmniSharpGotoDefinition
-  let g:sharpenup_map_prefix = '<Space>os'
+  let g:sharpenup_map_prefix = '<LEADER>os'
 
   let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
   let g:sharpenup_statusline_opts.Highlight = 0
@@ -301,9 +326,6 @@ call plug#end()
   let g:OmniSharp_highlight_groups = {
   \ 'ExcludedCode': 'NonText'
   \}
-
-  set completeopt=longest,menuone,preview
-  set previewheight=7
 
   augroup omnisharp_commands
     autocmd!
