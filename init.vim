@@ -3,56 +3,74 @@
 " }}}
 " Plugin {{{
 call plug#begin()
-  " Themes | Icons {{{
-    Plug 'dracula/vim' " Theme
-    Plug 'morhetz/gruvbox' " Theme
-    Plug 'Rigellute/shades-of-purple.vim' " Theme
-    Plug 'altercation/vim-colors-solarized' " Theme
-    " Plug 'mhinz/vim-startify' " Nice Start Screen
-    Plug 'ryanoasis/vim-devicons' " Icons
-    Plug 'vim-airline/vim-airline' " Details for bar and tabs
-    Plug 'vim-airline/vim-airline-themes'
-  "}}}
+  
+  " GUI {{{
+    " Themes {{{
+      Plug 'dracula/vim' " Theme
+      Plug 'morhetz/gruvbox' " Theme
+      Plug 'Rigellute/shades-of-purple.vim' " Theme
+      Plug 'altercation/vim-colors-solarized' " Theme
+    "}}}
+    " Icons {{{
+      Plug 'ryanoasis/vim-devicons' " Icons
+    " }}}
+    " Menus {{{
+      " Start Screen
+      " Plug 'mhinz/vim-startify'       
+      
+      " Status-line 
+      Plug 'itchyny/lightline.vim'
+      Plug 'maximbaz/lightline-ale'
+      " Plug 'vim-airline/vim-airline' " Details for bar and tabs
+      " Plug 'vim-airline/vim-airline-themes'
+
+      " Directory Explorer
+      Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }       
+      " Debugging Manager
+      Plug 'puremourning/vimspector'
+      
+      " }}}
+  " }}}
 
   " Language Integration{{{
+    " Language/File packs for Vim
+    Plug 'sheerun/vim-polyglot'
+    " DotNet Debug Server
     Plug 'OmniSharp/omnisharp-vim'
     " Mappings, code-actions available flag and statusline integration
     Plug 'nickspoons/vim-sharpenup'
     " Linting
     Plug 'dense-analysis/ale'
-    " Completion Manager
+    " Typing Completion Manager
     Plug 'prabirshrestha/asyncomplete.vim'
-    " Debugging Manager
-    Plug 'puremourning/vimspector'
-    " Language/File packs for Vim
-    Plug 'sheerun/vim-polyglot'
+    
     " Commenting
     Plug 'preservim/nerdcommenter'
+    
     " Symbol Hopping
-    Plug 'https://github.com/adelarsq/vim-matchit'
+    " Plug 'adelarsq/vim-matchit'
+    
+    " Paired Symbol Manipulation
+    Plug 'tpope/vim-surround' 
+    " Rainbow Parenthesis
+    " Plug 'frazrepo/vim-rainbow' 
+    " Auto insert and Delete of pair symbols
+    Plug 'jiangmiao/auto-pairs'   
 
+    Plug 'junegunn/vim-easy-align' " Alignment
   "}}}
 
   " Tools {{{
-    Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } " Directory Explorer
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy Finder
-    Plug 'junegunn/fzf.vim' " Fuzzy Finder
-    Plug 'mileszs/ack.vim' " Fuzzy Finder
+    " Fuzzy Finder
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'mileszs/ack.vim'
+
     Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] } " Side by Side File editing 
-    Plug 'junegunn/vim-easy-align' " Alignment
-    " Status-line 
-    Plug 'itchyny/lightline.vim'
-    Plug 'maximbaz/lightline-ale'
-    "Community Bug Fix
-    Plug 'antoinemadec/FixCursorHold.nvim'
-    
-    " Symbol List
-    Plug 'tc50cal/vim-taglist'
-    " Paired Symbol Manipulation 
-    Plug 'tpope/vim-surround'
-    Plug 'frazrepo/vim-rainbow' " Rainbow Parenthesis
-    Plug 'jiangmiao/auto-pairs' " Auto insert and Delete of pair symbols
-    Plug 'jisaacks/GitGutter' " Icons for file editing
+
+    Plug 'antoinemadec/FixCursorHold.nvim' "Community Bug Fix
+    Plug 'tc50cal/vim-taglist' " Symbol List
+    Plug 'airblade/vim-gitgutter' " Icons for file editing
   "}}}
 
   " External Integration {{{
@@ -96,14 +114,21 @@ call plug#end()
   if has('unix')
     set shell=/usr/bin/fish
   endif
-  set wildmode=longest,list       " get bash-like tab completions
-  set wildmenu
-  set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set number                      " add line numbers
   set relativenumber              " add line numbers
   set cursorline                  " highlight current cursor-line
   set statusline=2
   set signcolumn=yes
+  set wildmenu
+  set wildmode=longest,list       " get bash-like tab completions
+  set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
+  set completeopt=longest,menuone,preview
+  set previewheight=7
+
+  if &term =~ '256color'
+  " disable Background Color Erase (BCE)
+      set t_ut=
+  endif
 
   " Folding
   set foldmethod=marker
@@ -222,7 +247,7 @@ call plug#end()
 " Sharpenup: {{{
   " All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
   " :OmniSharpGotoDefinition
-  let g:sharpenup_map_prefix = '<Space>os'
+  let g:sharpenup_map_prefix = '<LEADER>os'
 
   let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
   let g:sharpenup_statusline_opts.Highlight = 0
@@ -302,9 +327,6 @@ call plug#end()
   \ 'ExcludedCode': 'NonText'
   \}
 
-  set completeopt=longest,menuone,preview
-  set previewheight=7
-
   augroup omnisharp_commands
     autocmd!
 
@@ -357,42 +379,45 @@ call plug#end()
   "let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
-    nnoremap <Leader>d <Plug>VimspectorContinue	"When debugging, continue. Otherwise start debugging.
-    nnoremap <Leader>r <Plug>VimspectorRestart	"Restart debugging with the same configuration.
-    nnoremap <Leader>p <Plug>VimspectorPause	" Pause debuggee.
-    nnoremap <Leader>q <Plug>VimspectorStop	" Stop debugging.
+    nnoremap <Leader>d :call vimspector#Continue()<CR>	"When debugging, continue. Otherwise start debugging.
+    nnoremap <Leader>r :call vimspector#Restart()<CR>	"Restart debugging with the same configuration.
+    nnoremap <Leader>p :call vimspector#Pause()<CR>	" Pause debuggee.
+    nnoremap <Leader>q :call vimspector#Stop()<CR>	" Stop debugging.
     nnoremap <Leader><S-q> :VimspectorReset<CR>
   "}}}
   
   " Stepping{{{
     "Step Over
-    nnoremap <Leader>s <Plug>VimspectorStepOver	
+    nnoremap <Leader>s :call vimspector#StepOver()<CR>
     "Step Into
-    nnoremap <Leader>i <Plug>VimspectorStepInto	
+    nnoremap <Leader>i :call vimspector#StepInto()<CR>	
     "Step out of current function scope
-    nnoremap <Leader>o <Plug>VimspectorStepOut	
+    nnoremap <Leader>o :call vimspector#StepOut()<CR>
     "Run to Cursor
-    nnoremap <Leader>h <Plug>VimspectorRunToCursor	
+    nnoremap <Leader>h :call vimspector#RunToCursor()<CR>
   "}}}
   
   " Breakpoints{{{
     "Toggle line breakpoint on the current line.
-    nnoremap <Leader>b <Plug>VimspectorToggleBreakpoint	
+    nnoremap <Leader>b :call vimspector#ToggleBreakpoint()<CR>
     "Add a function breakpoint for the expression under cursor
-    nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint	
+    nnoremap <Leader><S-b> <Plug>VimspectorAddFunctionBreakpoint
     "Toggle conditional line breakpoint or logpoint on the current line.
-    nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint	
+    nnoremap <Leader><C-b> <Plug>VimspectorToggleConditionalBreakpoint
   "}}}
 
   " Evaluate{{{
     nnoremap <Leader>e <Plug>VimspectorBalloonEval
-    " nnoremap <Leader>w :VimspectorWatch<cword><cr>
+    xmap <Leader>e <Plug>VimspectorBalloonEval
+
+    nnoremap <Leader>w :VimspectorWatch<cword><cr>
+    xmap <Leader>w :VimspectorWatch<cexpr><cr>
   "}}}
   
   " Windows{{{
     nnoremap <Leader>ll :VimspectorToggleLog<cr>
     nnoremap <Leader>lo :VimspectorShowOutput<cr>
-    nnoremap <Leader>lb <Plug>VimspectorBreakpoints
+    nnoremap <Leader>lb :call vimspector#ListBreakpoints()<CR>
     nnoremap <Leader>li :VimspectorDebugInfo<cr>
   "}}}
 
@@ -442,13 +467,13 @@ call plug#end()
  
   " NERDTree On-Start{{{
     " Start NERDTree. If a file is specified, move the cursor to its window.
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+    "autocmd StdinReadPre * let s:std_in=1
+    "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 
-    " Start NERDTree when Vim starts with a directory argument.
-    autocmd StdinReadPre  let s:std_in=1
-    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-      \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+    "" Start NERDTree when Vim starts with a directory argument.
+    "autocmd StdinReadPre  let s:std_in=1
+    "autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    "  \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
   " }}}
 
   " Persistent NERDTree Buffers {{{
@@ -463,29 +488,29 @@ call plug#end()
   " Ssh NERDTree{{{
     " Function to open the file or NERDTree or netrw.
     "   Returns: 1 if either file explorer was opened; otherwise, 0.
-    function! s:OpenFileOrExplorer(...)
-        if a:0 == 0 || a:1 == ''
-            NERDTree
-        elseif filereadable(a:1)
-            execute 'edit '.a:1
-            return 0
-        elseif a:1 =~? '^\(scp\|ftp\)://' " Add other protocols as needed.
-            execute 'Vexplore '.a:1
-        elseif isdirectory(a:1)
-            execute 'NERDTree '.a:1
-        endif
-        return 1
-    endfunction
+    "function! s:OpenFileOrExplorer(...)
+    "    if a:0 == 0 || a:1 == ''
+    "        NERDTree
+    "    elseif filereadable(a:1)
+    "        execute 'edit '.a:1
+    "        return 0
+    "    elseif a:1 =~? '^\(scp\|ftp\)://' " Add other protocols as needed.
+    "        execute 'Vexplore '.a:1
+    "    elseif isdirectory(a:1)
+    "        execute 'NERDTree '.a:1
+    "    endif
+    "    return 1
+    "endfunction
 
-    " Auto commands to handle OS commandline arguments
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc()==1 && !exists('s:std_in') | if <SID>OpenFileOrExplorer(argv()[0]) | wincmd p | enew | wincmd p | endif | endif
+    "" Auto commands to handle OS commandline arguments
+    "autocmd StdinReadPre * let s:std_in=1
+    "autocmd VimEnter * if argc()==1 && !exists('s:std_in') | if <SID>OpenFileOrExplorer(argv()[0]) | wincmd p | enew | wincmd p | endif | endif
 
-    " Command to call the OpenFileOrExplorer function.
-    command! -n=? -complete=file -bar Edit :call <SID>OpenFileOrExplorer('<args>')
+    "" Command to call the OpenFileOrExplorer function.
+    "command! -n=? -complete=file -bar Edit :call <SID>OpenFileOrExplorer('<args>')
 
-    " Command-mode abbreviation to replace the :edit Vim command.
-    cnoreabbrev e Edit
+    "" Command-mode abbreviation to replace the :edit Vim command.
+    "cnoreabbrev e Edit
   " }}}
 
 " }}}
