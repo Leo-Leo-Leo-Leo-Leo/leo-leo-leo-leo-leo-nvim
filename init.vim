@@ -3,89 +3,90 @@
 " }}}
 " Plugin {{{
 call plug#begin()
-  
+  " If a plugin is commented out, it was conflicting with another one or was
+  " it was just being tried out but another plugin is currently installed that
+  " already does its job.
+
+  " Editing Behavior {{{
+    " Auto insert and Delete of pair symbols
+    Plug 'jiangmiao/auto-pairs'   
+    " Paired Symbol Manipulation
+    Plug 'tpope/vim-surround' 
+    " Alignment
+    Plug 'junegunn/vim-easy-align'   
+    " Text Completion
+    Plug 'prabirshrestha/asyncomplete.vim'
+    " Community Bug Fix
+    Plug 'antoinemadec/FixCursorHold.nvim' 
+  " }}}
+  " External Integration {{{
+    " git integration
+    Plug 'tpope/vim-fugitive'
+    " tmux-vim cross navigation
+    if has('unix')
+      Plug 'christoomey/vim-tmux-navigator'
+    endif
+  " }}}
+  " Code Snippets {{{
+    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+    Plug 'honza/vim-snippets'
+    Plug 'mattn/emmet-vim'
+  "}}}
   " GUI {{{
     " Themes {{{
       Plug 'dracula/vim' " Theme
       Plug 'morhetz/gruvbox' " Theme
       Plug 'Rigellute/shades-of-purple.vim' " Theme
       Plug 'altercation/vim-colors-solarized' " Theme
-    "}}}
+    " }}}
     " Icons {{{
       Plug 'ryanoasis/vim-devicons' " Icons
+      Plug 'airblade/vim-gitgutter' " Icons for file editing (synced with git, left hand side of screen)
     " }}}
-    " Menus {{{
-      " Start Screen
-      " Plug 'mhinz/vim-startify'       
-      
-      " Status-line 
-      Plug 'itchyny/lightline.vim'
-      Plug 'maximbaz/lightline-ale'
+    " Info {{{
+      " Status-bar (usually at the bottom)
       " Plug 'vim-airline/vim-airline' " Details for bar and tabs
       " Plug 'vim-airline/vim-airline-themes'
-
-      " Directory Explorer
+      Plug 'itchyny/lightline.vim'
+      Plug 'maximbaz/lightline-ale'
+    " }}}
+    " Menus & Pop-ups {{{
+      " Start Screen
+      Plug 'mhinz/vim-startify'
+      " Nested Directory Explorer
       Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }       
-      " Debugging Manager
-      Plug 'puremourning/vimspector'
-      
-      " }}}
+      " Symbol List
+      " You will need to install ctags in CLI
+      Plug 'tc50cal/vim-taglist' 
+      " Fuzzy Finder
+      Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+      Plug 'junegunn/fzf.vim'
+      " Fuzzy Finder, all content of all files
+      " You will need to install ack, ag (Silver Surfer) or rip-grep in CLI
+      Plug 'mileszs/ack.vim'
+      " Side by Side File editing
+      Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] }  
+      " Graphical Debugger
+        Plug 'puremourning/vimspector'
+    " }}}
+    " Language Integration {{{
+      " Language/File packs for Vim
+      Plug 'sheerun/vim-polyglot'
+      " Mappings, code-actions available flag and statusline integration
+      Plug 'nickspoons/vim-sharpenup'
+      " Linting
+      Plug 'dense-analysis/ale'
+      " Commenting
+      Plug 'preservim/nerdcommenter'
+      " DotNet Debug Server
+      Plug 'OmniSharp/omnisharp-vim'
+      " Symbol Hopping
+      " Plug 'adelarsq/vim-matchit'
+      " Rainbow Parenthesis
+      " Plug 'frazrepo/vim-rainbow' 
+    " }}}
   " }}}
 
-  " Language Integration{{{
-    " Language/File packs for Vim
-    Plug 'sheerun/vim-polyglot'
-    " DotNet Debug Server
-    Plug 'OmniSharp/omnisharp-vim'
-    " Mappings, code-actions available flag and statusline integration
-    Plug 'nickspoons/vim-sharpenup'
-    " Linting
-    Plug 'dense-analysis/ale'
-    " Typing Completion Manager
-    Plug 'prabirshrestha/asyncomplete.vim'
-    
-    " Commenting
-    Plug 'preservim/nerdcommenter'
-    
-    " Symbol Hopping
-    " Plug 'adelarsq/vim-matchit'
-    
-    " Paired Symbol Manipulation
-    Plug 'tpope/vim-surround' 
-    " Rainbow Parenthesis
-    " Plug 'frazrepo/vim-rainbow' 
-    " Auto insert and Delete of pair symbols
-    Plug 'jiangmiao/auto-pairs'   
-
-    Plug 'junegunn/vim-easy-align' " Alignment
-  "}}}
-
-  " Tools {{{
-    " Fuzzy Finder
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    Plug 'mileszs/ack.vim'
-
-    Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] } " Side by Side File editing 
-
-    Plug 'antoinemadec/FixCursorHold.nvim' "Community Bug Fix
-    Plug 'tc50cal/vim-taglist' " Symbol List
-    Plug 'airblade/vim-gitgutter' " Icons for file editing
-  "}}}
-
-  " External Integration {{{
-    " tmux-vim cross navigation
-    Plug 'tpope/vim-fugitive'
-    if has('unix')
-      Plug 'christoomey/vim-tmux-navigator'
-    endif
-  " }}}
-
-  " Snippets{{{
-    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-    Plug 'honza/vim-snippets'
-    Plug 'mattn/emmet-vim'
-  "}}}
 call plug#end()
 "}}}
 " General {{{
@@ -103,32 +104,37 @@ call plug#end()
   set splitbelow                  " split below first
   set mouse=v                     " middle-click paste with
   set mouse=a                     " enable mouse click
-  set clipboard=unnamedplus       " using system clipboard
+  set clipboard+=unnamedplus      " using system clipboard
   set scrolloff=999               " Hack for centering screen when navigating
   set path+=**                    " Hack for Vim Fuzzy search because of double wild-card
   set ttyfast                     " Speed up scrolling in Vim
   set notimeout                   " Keep leader from timing out
   set history=1000                " Command History
 
-  " Visual Enhancements
+  " External Integration
   if has('unix')
     set shell=/usr/bin/fish
+    let g:perl_host_prog = "/home/leardotaylor/perl5/bin"
   endif
+  if &term =~ '256color'
+  " disable Background Color Erase (BCE)
+      set t_ut=
+  endif
+  
+  " Visual Enhancements
   set number                      " add line numbers
   set relativenumber              " add line numbers
   set cursorline                  " highlight current cursor-line
   set statusline=2
   set signcolumn=yes
+
+  " Pop-ups
   set wildmenu
   set wildmode=longest,list       " get bash-like tab completions
   set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set completeopt=longest,menuone,preview
   set previewheight=7
 
-  if &term =~ '256color'
-  " disable Background Color Erase (BCE)
-      set t_ut=
-  endif
 
   " Folding
   set foldmethod=marker
@@ -158,9 +164,9 @@ call plug#end()
 "}}}
 " Styling {{{
   " Theme
-  if (has("termguicolors"))
+  " if (has("termguicolors"))
     set termguicolors
-  endif
+  " endif
 
   colorscheme shades_of_purple
   
@@ -531,7 +537,7 @@ call plug#end()
   nnoremap <Leader>fm :Marks<CR>
 
 " grep/ack/ag{{{
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --vimgrep' 
   " Search all file contents in directory
   nnoremap <Leader>fe :Rg<CR>
   "}}}
