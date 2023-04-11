@@ -2,92 +2,94 @@
   let g:polyglot_disabled = ['markdown', 'autoindent']
 " }}}
 " Plugin {{{
-call plug#begin()
-  " If a plugin is commented out, it was conflicting with another one or was
-  " it was just being tried out but another plugin is currently installed that
-  " already does its job.
+  call plug#begin()
+    " If a plugin is commented out, it was conflicting with another one or was
+    " it was just being tried out but another plugin is currently installed that
+    " already does its job.
 
-  " Editing Behavior {{{
-    " Auto insert and Delete of pair symbols
-    Plug 'jiangmiao/auto-pairs'   
-    " Paired Symbol Manipulation
-    Plug 'tpope/vim-surround' 
-    " Alignment
-    Plug 'junegunn/vim-easy-align'   
-    " Text Completion
-    Plug 'prabirshrestha/asyncomplete.vim'
-    " Community Bug Fix
-    Plug 'antoinemadec/FixCursorHold.nvim' 
-  " }}}
-  " External Integration {{{
-    " git integration
-    Plug 'tpope/vim-fugitive'
-    " tmux-vim cross navigation
-    if has('unix')
-      Plug 'christoomey/vim-tmux-navigator'
-    endif
-  " }}}
-  " Code Snippets {{{
-    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-    Plug 'honza/vim-snippets'
-    Plug 'mattn/emmet-vim'
-  "}}}
-  " GUI {{{
-    " Themes {{{
-      Plug 'dracula/vim' " Theme
-      Plug 'morhetz/gruvbox' " Theme
-      Plug 'Rigellute/shades-of-purple.vim' " Theme
-      Plug 'altercation/vim-colors-solarized' " Theme
+    " Editing Behavior {{{
+      " Auto insert and Delete of pair symbols
+      Plug 'jiangmiao/auto-pairs'   
+      " Paired Symbol Manipulation
+      Plug 'tpope/vim-surround' 
+      " Alignment
+      Plug 'junegunn/vim-easy-align'   
+      " Language Agnostic Folding 
+      Plug 'pseewald/vim-anyfold'   
+      " Text Completion
+      Plug 'prabirshrestha/asyncomplete.vim'
+      " Community Bug Fix
+      Plug 'antoinemadec/FixCursorHold.nvim' 
     " }}}
-    " Icons {{{
-      Plug 'ryanoasis/vim-devicons' " Icons
-      Plug 'airblade/vim-gitgutter' " Icons for file editing (synced with git, left hand side of screen)
+    " External Integration {{{
+      " git integration
+      Plug 'tpope/vim-fugitive'
+      " tmux-vim cross navigation
+      if has('unix')
+        Plug 'christoomey/vim-tmux-navigator'
+      endif
     " }}}
-    " Info {{{
-      " Status-bar (usually at the bottom)
-      " Plug 'vim-airline/vim-airline' " Details for bar and tabs
-      " Plug 'vim-airline/vim-airline-themes'
-      Plug 'itchyny/lightline.vim'
-      Plug 'maximbaz/lightline-ale'
-    " }}}
-    " Menus & Pop-ups {{{
-      " Start Screen
-      Plug 'mhinz/vim-startify'
-      " Nested Directory Explorer
-      Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }       
-      " Symbol List
-      " You will need to install ctags in CLI
-      Plug 'tc50cal/vim-taglist' 
-      " Fuzzy Finder
-      Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-      Plug 'junegunn/fzf.vim'
-      " Fuzzy Finder, all content of all files
-      " You will need to install ack, ag (Silver Surfer) or rip-grep in CLI
-      Plug 'mileszs/ack.vim'
-      " Side by Side File editing
-      Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] }  
-      " Graphical Debugger
+    " Code Snippets {{{
+      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+      Plug 'honza/vim-snippets'
+      Plug 'mattn/emmet-vim'
+    "}}}
+    " GUI {{{
+      " Themes {{{
+        Plug 'dracula/vim' " Theme
+        Plug 'morhetz/gruvbox' " Theme
+        Plug 'Rigellute/shades-of-purple.vim' " Theme
+        Plug 'altercation/vim-colors-solarized' " Theme
+      " }}}
+      " Icons {{{
+        Plug 'ryanoasis/vim-devicons' " Icons
+        Plug 'airblade/vim-gitgutter' " Icons for file editing (synced with git, left hand side of screen)
+      " }}}
+      " Info {{{
+        " Status-bar (usually at the bottom)
+        " Plug 'vim-airline/vim-airline' " Details for bar and tabs
+        " Plug 'vim-airline/vim-airline-themes'
+        Plug 'itchyny/lightline.vim'
+        Plug 'maximbaz/lightline-ale'
+      " }}}
+      " Menus & Pop-ups {{{
+        " Start Screen
+        " Plug 'mhinz/vim-startify'
+        " Nested Directory Explorer
+        Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }       
+        " Symbol List
+        " You will need to install ctags in CLI
+        Plug 'tc50cal/vim-taglist' 
+        " Fuzzy Finder
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf.vim'
+        " Fuzzy Finder, all content of all files
+        " You will need to install ack, ag (Silver Surfer) or rip-grep in CLI
+        Plug 'mileszs/ack.vim'
+        " Side by Side File editing
+        Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme'] }  
+        " Graphical Debugger
         Plug 'puremourning/vimspector'
+      " }}}
+      " Language Integration {{{
+        " Language/File packs for Vim
+        Plug 'sheerun/vim-polyglot'
+        " Mappings, code-actions available flag and statusline integration
+        Plug 'nickspoons/vim-sharpenup'
+        " Linting
+        Plug 'dense-analysis/ale'
+        " Commenting
+        Plug 'preservim/nerdcommenter'
+        " DotNet Debug Server
+        Plug 'OmniSharp/omnisharp-vim'
+        " Symbol Hopping
+        " Plug 'adelarsq/vim-matchit'
+        " Rainbow Parenthesis
+        " Plug 'frazrepo/vim-rainbow' 
+      " }}}
     " }}}
-    " Language Integration {{{
-      " Language/File packs for Vim
-      Plug 'sheerun/vim-polyglot'
-      " Mappings, code-actions available flag and statusline integration
-      Plug 'nickspoons/vim-sharpenup'
-      " Linting
-      Plug 'dense-analysis/ale'
-      " Commenting
-      Plug 'preservim/nerdcommenter'
-      " DotNet Debug Server
-      Plug 'OmniSharp/omnisharp-vim'
-      " Symbol Hopping
-      " Plug 'adelarsq/vim-matchit'
-      " Rainbow Parenthesis
-      " Plug 'frazrepo/vim-rainbow' 
-    " }}}
-  " }}}
 
-call plug#end()
+  call plug#end()
 "}}}
 " General {{{
   " Backwards Compatility
@@ -139,6 +141,7 @@ call plug#end()
   " Folding
   set foldmethod=marker
   set foldmarker={{{,}}}
+  set foldlevel=99
 
   " set noswapfile                " disable creating swap file
   " set backupdir=~/.cache/vim    " Directory to store backup files.
@@ -171,18 +174,18 @@ call plug#end()
   colorscheme shades_of_purple
   
   " Text Highlighting
-  "highlight Normal                                        ctermbg=NONE
-  "highlight Folded        cterm=Bold      ctermfg=White   ctermbg=Black
+  highlight Normal                                        ctermbg=NONE
+  highlight Folded        cterm=Bold      ctermfg=White   ctermbg=Black
 
-  "highlight Comment       cterm=italic
-  "highlight CursorLine    cterm=NONE                      ctermbg=Grey 
-  "highlight CursorLineNr  cterm=bold      ctermfg=Green   ctermbg=Black  
-  "highlight LineNr        ctermfg=White                   ctermbg=Black 
-  
-  "highlight SpellBad                      ctermfg=White   ctermbg=Red 
-  "highlight spellCap      cterm=NONE      ctermfg=NONE
-  "highlight spellRare     cterm=NONE      ctermfg=NONE
-  "highlight SpellLocal    cterm=Underline                 ctermbg=NONE
+  highlight Comment       cterm=italic
+  highlight CursorLine    cterm=NONE                      ctermbg=Grey
+  highlight CursorLineNr  cterm=bold      ctermfg=Green   ctermbg=Black
+  highlight LineNr        ctermfg=White                   ctermbg=Black
+
+  highlight SpellBad                      ctermfg=White   ctermbg=Red
+  highlight spellCap      cterm=NONE      ctermfg=NONE
+  highlight spellRare     cterm=NONE      ctermfg=NONE
+  highlight SpellLocal    cterm=Underline                 ctermbg=NONE
   highlight MatchParen guifg=lightgreen guibg=green
 
   augroup ColorschemePreferences
@@ -467,29 +470,23 @@ call plug#end()
   " make sure relative line numbers are used
   autocmd FileType nerdtree setlocal number relativenumber
 
-  nnoremap <Leader>nn :NERDTreeMirror<CR>:NERDTreeFocus<CR>
   nnoremap <Leader>nt :NERDTreeToggle<CR>
   nnoremap <Leader>nf :NERDTreeFind<CR>
+  nnoremap <Leader>nm :NERDTreeMirror<CR>
+  nnoremap <Leader>nn :NERDTreeFocus<CR>
  
-  " NERDTree On-Start{{{
-    " Start NERDTree. If a file is specified, move the cursor to its window.
-    "autocmd StdinReadPre * let s:std_in=1
-    "autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+  " Start NERDTree after vim, move the cursor to previous window.
+  autocmd VimEnter * NERDTree | wincmd p
 
-    "" Start NERDTree when Vim starts with a directory argument.
-    "autocmd StdinReadPre  let s:std_in=1
-    "autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-    "  \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
-  " }}}
-
-  " Persistent NERDTree Buffers {{{
-    " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-    " autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    "     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-    " Open the existing NERDTree on each new tab.
-    " autocmd BufWinEnter silent NERDTreeMirror
-  " }}}
+  " Open the existing NERDTree on each new tab.
+  " autocmd BufWinEnter * silent! NERDTreeMirror | wincmd p
+  
+  " Exit Vim if NERDTree is the only window remaining in the only tab.
+  " autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+  
+  " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+  " autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+  "     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
   " Ssh NERDTree{{{
     " Function to open the file or NERDTree or netrw.
@@ -561,7 +558,7 @@ call plug#end()
   nnoremap <Leader>gm :Git mergetool<CR>
 " }}}
 " Nerd-Commenter{{{
-" Create default mappings
+  " Create default mappings
   let g:NERDCreateDefaultMappings = 1
   
   "[count]<leader>cc |NERDCommenterComment|
@@ -626,5 +623,23 @@ call plug#end()
 
   " Enable NERDCommenterToggle to check all selected lines is commented or not 
   let g:NERDToggleCheckAllLines = 1
+
+" }}}
+" Any-Fold {{{
+  " activate anyfold by default
+  augroup anyfold
+    autocmd!
+    autocmd Filetype * AnyFoldActivate
+  augroup END
+
+  " disable anyfold for large files
+  let g:LargeFile = 1000000 " file is large if size greater than 1MB
+  function LargeFile()
+    augroup anyfold
+      autocmd! " remove AnyFoldActivate
+      autocmd Filetype * setlocal foldmethod=indent " fall back to indent folding
+    augroup END
+  endfunction
+  autocmd BufReadPre,BufRead * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 
 " }}}
