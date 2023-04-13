@@ -521,26 +521,23 @@
 
   " move fzf search pop-up
   let g:fzf_layout = { 'down': '~40%'  }
-  " Search current lines
+  
+  " Search current buffer lines
   nnoremap <Leader>fl :BLines<CR>
-  " Search open buffers
+  " Search all buffers lines
   nnoremap <Leader>fo :Lines<CR> 
   " Search for open buffer
   nnoremap <Leader>fb :Buffer<CR>
-  " Search current git status
+  " Search git diff
   nnoremap <Leader>fd :GFiles?<CR>
   " Search all files in directory
   nnoremap <Leader>fa :Files<CR>
-  " Search all snippets in directory
+  " Search snippets
   nnoremap <Leader>fs :Snippets<CR>
   " Search all marks in buffers
   nnoremap <Leader>fm :Marks<CR>
-
-" grep/ack/ag{{{
-  let g:ackprg = 'ag --vimgrep' 
   " Search all file contents in directory
   nnoremap <Leader>fe :Rg<CR>
-  "}}}
 " }}}
 " Fugitive{{{
   " Git stage
