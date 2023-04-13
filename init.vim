@@ -20,7 +20,9 @@
       Plug 'prabirshrestha/asyncomplete.vim'
       " Community Bug Fix
       Plug 'antoinemadec/FixCursorHold.nvim' 
-    " }}}
+      " Persistent Wildmenu
+      Plug 'gelguy/wilder.nvim'
+      " }}}
     " External Integration {{{
       " git integration
       Plug 'tpope/vim-fugitive'
@@ -75,13 +77,13 @@
         " Language/File packs for Vim
         Plug 'sheerun/vim-polyglot'
         " Mappings, code-actions available flag and statusline integration
-        Plug 'nickspoons/vim-sharpenup'
+        " Plug 'nickspoons/vim-sharpenup'
         " Linting
         Plug 'dense-analysis/ale'
         " Commenting
         Plug 'preservim/nerdcommenter'
         " DotNet Debug Server
-        Plug 'OmniSharp/omnisharp-vim'
+        " Plug 'OmniSharp/omnisharp-vim'
         " Symbol Hopping
         " Plug 'adelarsq/vim-matchit' comes with neovim by default
         " Rainbow Parenthesis
@@ -132,7 +134,7 @@
 
   " Pop-ups
   set wildmenu
-  set wildmode=longest,full " tab completion pop-up in command mode 
+  " set wildmode=longest,full " tab completion pop-up in command mode, wilder plugin takes care of this
   set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set completeopt=longest,menuone,preview
   set previewheight=7
@@ -156,7 +158,7 @@
   set shiftwidth=2                " width for auto-indents
   set autoindent                  " indent a new line the same amount as the line just typed
   set tabstop=2                   " number of columns occupied by a tab
-  set cc=80                      " set an 80 column border for good coding style
+  set cc=120                      " set an 80 column border for good coding style
 "}}}
 " Search & Highlighting {{{
   set showmatch                   " show matching
@@ -256,48 +258,50 @@
 " Sharpenup: {{{
   " All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
   " :OmniSharpGotoDefinition
-  let g:sharpenup_map_prefix = '<LEADER>os'
-
-  let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
-  let g:sharpenup_statusline_opts.Highlight = 0
-
-  augroup OmniSharpIntegrations
-    autocmd!
-    autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
-  augroup END
+  " let g:sharpenup_map_prefix = '<LEADER>os'
+  "
+  " let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
+  " let g:sharpenup_statusline_opts.Highlight = 0
+  "
+  " augroup OmniSharpIntegrations
+  "   autocmd!
+  "   autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
+  " augroup END
 " }}}
 " Lightline: {{{
-  let g:shades_of_purple_lightline = 1
-  let g:lightline = {
-  \ 'colorscheme': 'shades_of_purple',
-  \ 'active': {
-  \   'right': [
-  \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
-  \     ['lineinfo'], ['percent'],
-  \     ['fileformat', 'fileencoding', 'filetype', 'sharpenup']
-  \   ]
-  \ },
-  \ 'inactive': {
-  \   'right': [['lineinfo'], ['percent'], ['sharpenup']]
-  \ },
-  \ 'component': {
-  \   'sharpenup': sharpenup#statusline#Build()
-  \ },
-  \ 'component_expand': {
-  \   'linter_checking': 'lightline#ale#checking',
-  \   'linter_infos': 'lightline#ale#infos',
-  \   'linter_warnings': 'lightline#ale#warnings',
-  \   'linter_errors': 'lightline#ale#errors',
-  \   'linter_ok': 'lightline#ale#ok'
-    \  },
-    \ 'component_type': {
-    \   'linter_checking': 'right',
-    \   'linter_infos': 'right',
-    \   'linter_warnings': 'warning',
-    \   'linter_errors': 'error',
-    \   'linter_ok': 'right'
-  \  }
-  \}
+  
+  " let g:shades_of_purple_lightline = 1
+  " let g:lightline = {
+  " \ 'colorscheme': 'shades_of_purple',
+  " \ 'active': {
+  " \   'right': [
+  " \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
+  " \     ['lineinfo'], ['percent'],
+  " \     ['fileformat', 'fileencoding', 'filetype', 'sharpenup']
+  " \   ]
+  " \ },
+  " \ 'inactive': {
+  " \   'right': [['lineinfo'], ['percent'], ['sharpenup']]
+  " \ },
+  " \ 'component': {
+  " \   'sharpenup': sharpenup#statusline#Build()
+  " \ },
+  " \ 'component_expand': {
+  " \   'linter_checking': 'lightline#ale#checking',
+  " \   'linter_infos': 'lightline#ale#infos',
+  " \   'linter_warnings': 'lightline#ale#warnings',
+  " \   'linter_errors': 'lightline#ale#errors',
+  " \   'linter_ok': 'lightline#ale#ok'
+  "   \  },
+  "   \ 'component_type': {
+  "   \   'linter_checking': 'right',
+  "   \   'linter_infos': 'right',
+  "   \   'linter_warnings': 'warning',
+  "   \   'linter_errors': 'error',
+  "   \   'linter_ok': 'right'
+  " \  }
+  " \}
+
   " Use unicode chars for ale indicators in the statusline
   let g:lightline#ale#indicator_checking = "\uf110 "
   let g:lightline#ale#indicator_infos = "\uf129 "
@@ -307,91 +311,128 @@
 " }}}
 " OmniSharp: {{{
 
-  let g:OmniSharp_server_use_net6 = 1
-  let g:OmniSharp_selector_ui = 'fzf'
-  let g:OmniSharp_selector_findusages = 'fzf'
-  let g:OmniSharp_diagnostic_exclude_paths = [
-  \ 'obj\\',
-  \ '[Tt]emp\\',
-  \ '\.nuget\\',
-  \ '\<AssemblyInfo\.cs\>'
-  \]
-
-  let g:OmniSharp_popup_position = 'peek'
-  let g:OmniSharp_popup_options = {
-  \ 'winblend': 30,
-  \ 'winhl': 'Normal:Normal,FloatBorder:Special',
-  \ 'border': 'rounded'
-  \}
-  let g:OmniSharp_popup_mappings = {
-  \ 'sigNext': '<C-n>',
-  \ 'sigPrev': '<C-p>',
-  \ 'pageDown': ['<C-f>', '<PageDown>'],
-  \ 'pageUp': ['<C-b>', '<PageUp>']
-  \}
-
-  let g:OmniSharp_want_snippet = 1
-
-  let g:OmniSharp_highlight_groups = {
-  \ 'ExcludedCode': 'NonText'
-  \}
-
-  augroup omnisharp_commands
-    autocmd!
-
-    " Show type information automatically when the cursor stops moving.
-    " Note that the type is echoed to the Vim command line, and will overwrite
-    " any other messages in this space including e.g. ALE linting messages.
-    " autocmd CursorHold *.cs OmniSharpTypeLookup
-
-    " The following commands are contextual, based on the cursor position.
-    autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osfu <Plug>(omnisharp_find_usages)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osfi <Plug>(omnisharp_find_implementations)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>ospd <Plug>(omnisharp_preview_definition)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>ospi <Plug>(omnisharp_preview_implementations)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_type_lookup)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osd <Plug>(omnisharp_documentation)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osfs <Plug>(omnisharp_find_symbol)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osfx <Plug>(omnisharp_fix_usings)
-    autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
-    autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
-
-    " Navigate up and down by method/property/field
-    autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
-    autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
-    " Find all code errors/warnings for the current solution and populate the quickfix window
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
-    " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
-    autocmd FileType cs xmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
-    " Repeat the last code action performed (does not use a selector)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
-    autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
-
-    autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
-
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
-
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
-    autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
-  augroup END
+  " let g:OmniSharp_server_use_net6 = 1
+  " let g:OmniSharp_selector_ui = 'fzf'
+  " let g:OmniSharp_selector_findusages = 'fzf'
+  " let g:OmniSharp_diagnostic_exclude_paths = [
+  " \ 'obj\\',
+  " \ '[Tt]emp\\',
+  " \ '\.nuget\\',
+  " \ '\<AssemblyInfo\.cs\>'
+  " \]
+  "
+  " let g:OmniSharp_popup_position = 'peek'
+  " let g:OmniSharp_popup_options = {
+  " \ 'winblend': 30,
+  " \ 'winhl': 'Normal:Normal,FloatBorder:Special',
+  " \ 'border': 'rounded'
+  " \}
+  " let g:OmniSharp_popup_mappings = {
+  " \ 'sigNext': '<C-n>',
+  " \ 'sigPrev': '<C-p>',
+  " \ 'pageDown': ['<C-f>', '<PageDown>'],
+  " \ 'pageUp': ['<C-b>', '<PageUp>']
+  " \}
+  "
+  " let g:OmniSharp_want_snippet = 1
+  "
+  " let g:OmniSharp_highlight_groups = {
+  " \ 'ExcludedCode': 'NonText'
+  " \}
+  "
+  " augroup omnisharp_commands
+  "   autocmd!
+  "
+  "   " Show type information automatically when the cursor stops moving.
+  "   " Note that the type is echoed to the Vim command line, and will overwrite
+  "   " any other messages in this space including e.g. ALE linting messages.
+  "   " autocmd CursorHold *.cs OmniSharpTypeLookup
+  "
+  "   " The following commands are contextual, based on the cursor position.
+  "   autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osfu <Plug>(omnisharp_find_usages)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osfi <Plug>(omnisharp_find_implementations)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>ospd <Plug>(omnisharp_preview_definition)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>ospi <Plug>(omnisharp_preview_implementations)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_type_lookup)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osd <Plug>(omnisharp_documentation)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osfs <Plug>(omnisharp_find_symbol)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osfx <Plug>(omnisharp_fix_usings)
+  "   autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+  "   autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+  "
+  "   " Navigate up and down by method/property/field
+  "   autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
+  "   autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
+  "   " Find all code errors/warnings for the current solution and populate the quickfix window
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osgcc <Plug>(omnisharp_global_code_check)
+  "   " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+  "   autocmd FileType cs xmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_actions)
+  "   " Repeat the last code action performed (does not use a selector)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+  "   autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
+  "
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
+  "
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
+  "
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
+  "   autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
+  " augroup END
 " }}}
 " Asyncomplete: {{{
   let g:asyncomplete_auto_popup = 1
   " let g:asyncomplete_auto_completeopt = 0
 " }}}
 " Vimspector {{{
-  " packadd! vimspector
-  let g:vimspector_bottombar_height=10
+  " let g:vimspector_bottombar_height=10
+
+  " sign define vimspectorBP text=o             texthl=WarningMsg
+  " sign define vimspectorBPCond text=o?        texthl=WarningMsg
+  " sign define vimspectorBPLog text=!!         texthl=SpellRare
+  " sign define vimspectorBPDisabled text=o!    texthl=LineNr
+  " sign define vimspectorPC text=\ >           texthl=MatchParen
+  " sign define vimspectorPCBP text=o>          texthl=MatchParen
+  " sign define vimspectorCurrentThread text=>  texthl=MatchParen
+  " sign define vimspectorCurrentFrame text=>   texthl=Special
+  "
+  " let g:vimspector_sign_priority = {
+  "       \    'vimspectorBP':         3,
+  "       \    'vimspectorBPCond':     2,
+  "       \    'vimspectorBPLog':      2,
+  "       \    'vimspectorBPDisabled': 1,
+  "       \    'vimspectorPC':         999,
+  "       \ }
+
+  " func! CustomiseUI()
+  "   call win_gotoid( g:vimspector_session_windows.code  )
+  "   " Clear the existing WinBar created by Vimspector
+  "   nunmenu WinBar
+  "   " Create our own WinBar
+  "   nnoremenu WinBar.Kill :call vimspector#Stop( { 'interactive': v:true }  )<CR>
+  "   nnoremenu WinBar.Continue :call vimspector#Continue()<CR>
+  "   nnoremenu WinBar.Pause :call vimspector#Pause()<CR>
+  "   nnoremenu WinBar.Step\ Over  :call vimspector#StepOver()<CR>
+  "   nnoremenu WinBar.Step\ In :call vimspector#StepInto()<CR>
+  "   nnoremenu WinBar.Step\ Out :call vimspector#StepOut()<CR>
+  "   nnoremenu WinBar.Restart :call vimspector#Restart()<CR>
+  "   nnoremenu WinBar.Exit :call vimspector#Reset()<CR>
+  " endfunction
+  "
+  " augroup MyVimspectorUICustomistaion
+  "   autocmd!
+  "   autocmd User VimspectorUICreated call s:CustomiseUI()
+  " augroup END
+
   "let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
-    nnoremap <Leader>d :call vimspector#Continue()<CR>	"When debugging, continue. Otherwise start debugging.
+    nnoremap <Leader>d :call vimspector#Continue()<CR> :NERDTreeClose<CR> "When debugging, continue. Otherwise start debugging. Also close nerdtree
     nnoremap <Leader>r :call vimspector#Restart()<CR>	"Restart debugging with the same configuration.
     nnoremap <Leader>p :call vimspector#Pause()<CR>	" Pause debuggee.
-    nnoremap <Leader>q :call vimspector#Stop()<CR>	" Stop debugging.
+    nnoremap <Leader>q :call vimspector#Stop()<CR>" Stop debugging.
     nnoremap <Leader><S-q> :VimspectorReset<CR>
   "}}}
   
@@ -416,18 +457,18 @@
   "}}}
 
   " Evaluate{{{
-    nnoremap <Leader>e <Plug>VimspectorBalloonEval
+    nnoremap <Leader>e eb<Plug>VimspectorBalloonEval
     xmap <Leader>e <Plug>VimspectorBalloonEval
 
-    nnoremap <Leader>w :VimspectorWatch<cword><cr>
-    xmap <Leader>w :VimspectorWatch<cexpr><cr>
+    nnoremap <Leader>w :VimspectorWatch<CR>
+    xmap <Leader>w :VimspectorWatch<CR>
   "}}}
   
   " Windows{{{
-    nnoremap <Leader>ll :VimspectorToggleLog<cr>
-    nnoremap <Leader>lo :VimspectorShowOutput<cr>
+    nnoremap <Leader>ll :VimspectorToggleLog<CR>
+    nnoremap <Leader>lo :VimspectorShowOutput<CR>
     nnoremap <Leader>lb :call vimspector#ListBreakpoints()<CR>
-    nnoremap <Leader>li :VimspectorDebugInfo<cr>
+    nnoremap <Leader>li :VimspectorDebugInfo<CR>
   "}}}
 
   " vimspector.json{{{
@@ -437,32 +478,32 @@
   "}}}
 "}}}
 " FixCursorHold{{{
-  let g:cursorhold_updatetime = 3000 
+  let g:cursorhold_updatetime = 200 
 " }}}
 " Dev-Icons{{{
-  let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-  let g:DevIconsEnableFoldersOpenClose = 1
-  let g:DevIconsEnableFolderExtensionPatternMatching = 1
+  " let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+  " let g:DevIconsEnableFoldersOpenClose = 1
+  " let g:DevIconsEnableFolderExtensionPatternMatching = 1
 
-  let g:DevIconsDefaultFolderOpenSymbol=''
-  let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol=''
+  " let g:DevIconsDefaultFolderOpenSymbol=''
+  " let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol=''
 
-  " Custom icons for file extensions
-  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
-  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
-  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ts'] = 'ﯤ'
-  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = 'ﬥ'
-
-  let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
-  let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.test.ts'] = 'ﭧ'
-
-  " Custom icons for specific filenames
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['ormconfig.js'] = ''
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.env'] = 'ﭩ'
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.editorconfig'] = ''
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.npmrc'] = ''
-  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['src'] = ''
+  " " Custom icons for file extensions
+  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
+  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ts'] = 'ﯤ'
+  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = 'ﬥ'
+  "
+  " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
+  " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.test.ts'] = 'ﭧ'
+  "
+  " " Custom icons for specific filenames
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['ormconfig.js'] = ''
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.env'] = 'ﭩ'
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.editorconfig'] = ''
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.npmrc'] = ''
+  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['src'] = ''
 " }}}
 " NERDTree {{{
   " enable line numbers
@@ -479,7 +520,7 @@
   autocmd VimEnter * NERDTree | wincmd p
 
   " Open the existing NERDTree on each new tab.
-  " autocmd BufWinEnter * silent! NERDTreeMirror | wincmd p
+  autocmd TabNew * silent! NERDTreeMirror | wincmd p
   
   " Exit Vim if NERDTree is the only window remaining in the only tab.
   " autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -557,51 +598,56 @@
   " Git merge tool
   nnoremap <Leader>gm :Git mergetool<CR>
 " }}}
-" Nerd-Commenter{{{
-  " Create default mappings
-  let g:NERDCreateDefaultMappings = 1
+" Nerd-Commenter {{{
   
-  "[count]<leader>cc |NERDCommenterComment|
-  " Comment out the current line or text selected in visual mode.
-  "
-  "[count]<leader>cn |NERDCommenterNested|
-  " Same as cc but forces nesting.
-  "
-  "[count]<leader>c<space> |NERDCommenterToggle|
-  " Toggles the comment state of the selected line(s). If the topmost selected line is commented, all selected lines are uncommented and vice versa.
-  "
-  "[count]<leader>cm |NERDCommenterMinimal|
-  " Comments the given lines using only one set of multipart delimiters.
-  "
-  "[count]<leader>ci |NERDCommenterInvert|
-  " Toggles the comment state of the selected line(s) individually.
-  "
-  "[count]<leader>cs |NERDCommenterSexy|
-  " Comments out the selected lines with a pretty block formatted layout.
-  "
-  "[count]<leader>cy |NERDCommenterYank|
-  " Same as cc except that the commented line(s) are yanked first.
-  "
-  "<leader>c$ |NERDCommenterToEOL|
-  " Comments the current line from the cursor to the end of line.
-  "
-  "<leader>cA |NERDCommenterAppend|
-  " Adds comment delimiters to the end of line and goes into insert mode between them.
-  "
-  "|NERDCommenterInsert|
-  " Adds comment delimiters at the current cursor position and inserts between. Disabled by default.
-  "
-  "<leader>ca |NERDCommenterAltDelims|
-  " Switches to the alternative set of delimiters.
-  "
-  "[count]<leader>cl |NERDCommenterAlignLeft [count]<leader>cb |NERDCommenterAlignBoth
-  " Same as |NERDCommenterComment| except that the delimiters are aligned down the left side (<leader>cl) or both sides (<leader>cb).
-  "
-  "[count]<leader>cu |NERDCommenterUncomment|
-  " Uncomments the selected line(s).
+  " Create default mappings
+  let g:NERDCreateDefaultMappings = 0
 
-  nnoremap <silent> <leader>c} V}:call NERDComment('x', 'toggle')<CR>
-  nnoremap <silent> <leader>c{ V{:call NERDComment('x', 'toggle')<CR>
+  " Defaults Mappings {{{
+    "[count]<leader>cc |NERDCommenterComment|
+    " Comment out the current line or text selected in visual mode.
+    "
+    "[count]<leader>cn |NERDCommenterNested|
+    " Same as cc but forces nesting.
+    "
+    "[count]<leader>c<space> |NERDCommenterToggle|
+    " Toggles the comment state of the selected line(s). If the topmost selected line is commented, all selected lines are uncommented and vice versa.
+    "
+    "[count]<leader>cm |NERDCommenterMinimal|
+    " Comments the given lines using only one set of multipart delimiters.
+    "
+    "[count]<leader>ci |NERDCommenterInvert|
+    " Toggles the comment state of the selected line(s) individually.
+    "
+    "[count]<leader>cs |NERDCommenterSexy|
+    " Comments out the selected lines with a pretty block formatted layout.
+    "
+    "[count]<leader>cy |NERDCommenterYank|
+    " Same as cc except that the commented line(s) are yanked first.
+    "
+    "<leader>c$ |NERDCommenterToEOL|
+    " Comments the current line from the cursor to the end of line.
+    "
+    "<leader>cA |NERDCommenterAppend|
+    " Adds comment delimiters to the end of line and goes into insert mode between them.
+    "
+    "|NERDCommenterInsert|
+    " Adds comment delimiters at the current cursor position and inserts between. Disabled by default.
+    "
+    "<leader>ca |NERDCommenterAltDelims|
+    " Switches to the alternative set of delimiters.
+    "
+    "[count]<leader>cl |NERDCommenterAlignLeft [count]<leader>cb |NERDCommenterAlignBoth
+    " Same as |NERDCommenterComment| except that the delimiters are aligned down the left side (<leader>cl) or both sides (<leader>cb).
+    "
+    "[count]<leader>cu |NERDCommenterUncomment|
+    " Uncomments the selected line(s).
+  " }}}
+
+  " Custom Mappings {{{
+    nnoremap <LEADER>c :call NERDComment('0', 'toggle')<CR>
+    xmap <LEADER>c <plug>NERDCommenterToggle
+  " }}}
 
   " Add spaces after comment delimiters by default
   let g:NERDSpaceDelims = 1
@@ -642,4 +688,14 @@
   endfunction
   autocmd BufReadPre,BufRead * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 
+" }}}
+" Wilder {{{
+  " Default keys
+  call wilder#setup({ 
+        \ 'modes': [':'],
+        \ 'next_key': '<Tab>',
+        \ 'previous_key': '<S-Tab>',
+        \ 'accept_key': '<Down>',
+        \ 'reject_key': '<Up>',
+        \ })
 " }}}
