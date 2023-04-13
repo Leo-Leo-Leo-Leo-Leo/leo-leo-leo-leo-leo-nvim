@@ -429,7 +429,7 @@
   "let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
-    nnoremap <Leader>d :call vimspector#Continue()<CR> :NERDTreeClose<CR> "When debugging, continue. Otherwise start debugging. Also close nerdtree
+    nnoremap <Leader>d :call vimspector#Continue()<CR> "When debugging, continue. Otherwise start debugging. Also close nerdtree
     nnoremap <Leader>r :call vimspector#Restart()<CR>	"Restart debugging with the same configuration.
     nnoremap <Leader>p :call vimspector#Pause()<CR>	" Pause debuggee.
     nnoremap <Leader>q :call vimspector#Stop()<CR>" Stop debugging.
@@ -518,9 +518,10 @@
  
   " Start NERDTree after vim, move the cursor to previous window.
   autocmd VimEnter * NERDTree | wincmd p
+  autocmd BufWinEnter * silent! NERDTreeMirror | wincmd p | NERDTreeClose | NERDTreeToggle | wincmd p
 
   " Open the existing NERDTree on each new tab.
-  autocmd TabNew * silent! NERDTreeMirror | wincmd p
+  " autocmd TabNew * silent! NERDTreeMirror | wincmd p
   
   " Exit Vim if NERDTree is the only window remaining in the only tab.
   " autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
