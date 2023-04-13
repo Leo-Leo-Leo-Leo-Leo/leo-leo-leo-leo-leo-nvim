@@ -83,7 +83,7 @@
         " DotNet Debug Server
         Plug 'OmniSharp/omnisharp-vim'
         " Symbol Hopping
-        " Plug 'adelarsq/vim-matchit'
+        " Plug 'adelarsq/vim-matchit' comes with neovim by default
         " Rainbow Parenthesis
         " Plug 'frazrepo/vim-rainbow' 
       " }}}
@@ -132,7 +132,7 @@
 
   " Pop-ups
   set wildmenu
-  set wildmode=longest,list       " get bash-like tab completions
+  set wildmode=longest,full " tab completion pop-up in command mode 
   set wildignore+=**/node_modules/**,**/dist/**,**/bin/**,**/obj/**
   set completeopt=longest,menuone,preview
   set previewheight=7
@@ -517,7 +517,10 @@
   " }}}
 
 " }}}
-" FZF{{{
+" FZF {{{
+
+  " move fzf search pop-up
+  let g:fzf_layout = { 'down': '~40%'  }
   " Search current lines
   nnoremap <Leader>fl :BLines<CR>
   " Search open buffers
