@@ -21,7 +21,13 @@
       " Community Bug Fix
       Plug 'antoinemadec/FixCursorHold.nvim' 
       " Persistent Wildmenu
-      Plug 'gelguy/wilder.nvim'
+      function! UpdateRemotePlugins(...)
+        " Needed to refresh runtime files
+        let &rtp=&rtp
+        UpdateRemotePlugins
+      endfunction
+      Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins')  }
+
       " }}}
     " External Integration {{{
       " git integration
@@ -32,7 +38,7 @@
       endif
     " }}}
     " Code Snippets {{{
-      Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+      Plug 'SirVer/ultisnips'
       Plug 'honza/vim-snippets'
       Plug 'mattn/emmet-vim'
     "}}}
@@ -198,17 +204,17 @@
     autocmd ColorScheme * highlight link ALEInfoSign    Identifier
   augroup END
 "}}}
+" TODO: Remove plugin dependancies from here, or only bind them if the plugin
+" is loaded with if statememnts (something like that at least.)
 " Event Bindings {{{
+  autocmd VimEnter * call LoadUserSession()
   function! LoadUserSession()
     execute 'VimspectorLoadSession'
   endfunction
-  autocmd VimEnter * call LoadUserSession()
+  " autocmd BufEnter * if bufname('$') != '' && exists('b:NERDTree') && !b:NERDTree.isTabTree() | e | endif
 " 
 " }}}
 " Keybindings {{{
-" TODO: Remove plugin dependancies from here, or only bind them if the plugin
-" is loaded with if statememnts (something like that at least.)
-
   " Tab Backward in Insert Mode
   inoremap <S-TAB> <C-d>
   " Save
@@ -568,7 +574,7 @@
 " FZF {{{
 
   " move fzf search pop-up
-  let g:fzf_layout = { 'down': '~40%'  }
+  let g:fzf_layout = { 'down': '~40%' }
   
   " find current buffer lines
   nnoremap <Leader>fl :BLines<CR>
@@ -657,12 +663,36 @@
 
 " }}}
 " Wilder {{{
-  " Default keys
+
+  " Minimal Config
   call wilder#setup({ 
-        \ 'modes': [':'],
+        \ 'modes': [':', '/', '?'],
         \ 'next_key': '<Tab>',
         \ 'previous_key': '<S-Tab>',
         \ 'accept_key': '<Down>',
         \ 'reject_key': '<Up>',
         \ })
+
+  " Visual
+  call wilder#set_option(
+        \'renderer',
+        \ wilder#popupmenu_renderer({
+        \     'highlighter': wilder#basic_highlighter(),
+        \     'min_width': '100%',
+        \     'max_height': '30%',
+        \     'reverse': 1,
+        \ }))
+  
+  " Behavior
+  call wilder#set_option('pipeline', [
+        \   wilder#branch(
+        \     wilder#python_file_finder_pipeline({
+        \       'file_command': ['rg', '--files', '--vimgrep'],
+        \       'dir_command': ['find', '.', '-type', 'd', '-printf', '%P\n'],
+        \       'filters' : ['fuzzy_filter', 'difflib_sorter'], 
+        \     }),
+        \     wilder#cmdline_pipeline(),
+        \     wilder#python_search_pipeline(),
+        \   ),
+        \ ])
 " }}}
