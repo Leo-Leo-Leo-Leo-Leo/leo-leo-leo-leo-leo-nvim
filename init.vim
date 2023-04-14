@@ -215,6 +215,11 @@
 " 
 " }}}
 " Keybindings {{{
+  
+  " Leader key, '/' by default
+  nnoremap <SPACE> <Nop>
+  let mapleader = " "
+
   " Tab Backward in Insert Mode
   inoremap <S-TAB> <C-d>
   " Save
@@ -228,6 +233,7 @@
 
   " Quit:  Delete Buffer, or quit vim if last buffer. Also closes nameless buffer
   nnoremap <C-q> :call CloseWindow()<CR>
+  inoremap <C-q> <esc>:call CloseWindow()<CR>
   function! CloseWindow()
     if tabpagenr('$') == 1 && winnr('$') == 1 || bufname('$') == ''
       execute 'q'
@@ -235,11 +241,6 @@
       execute 'bd' 
     endif
   endfunction
-
-  inoremap <C-q> <esc>:q<CR>
-  " Search selected text
-  vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-  vnoremap ?? y/\V<C-R>=escape(@",'/\')<CR><CR>
 
   " move line or visually selected block - alt+j/k
   inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -266,9 +267,11 @@
   nnoremap <silent> <s-l> gt
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
+ 
   " Escape insert mode
-  inoremap <Leader><Tab> <Esc>
-  tnoremap <Leader><Tab> <C-\><C-n>
+  inoremap <silent> <Leader><Leader> <Esc>
+  " Escape vim's terminal emulator
+  tnoremap <silent> <Leader><Leader> <Esc><C-\><C-n>
 
   "}}}
 " Easy Align {{{
@@ -530,9 +533,7 @@
  
   " Start NERDTree after vim, move the cursor to previous window.
   autocmd VimEnter * NERDTree | wincmd p
-  " autocmd TabNewEntered * silent! NERDTreeMirror | wincmd p
-  " autocmd BufWinEnter * silent! NERDTreeFocus | wincmd p
-  autocmd BufWinEnter * silent! NERDTreeMirror | wincmd p
+  autocmd BufWinEnter * silent! NERDTreeMirror
 
   " Open the existing NERDTree on each new tab.
   " autocmd TabNew * silent! NERDTreeMirror | wincmd p
