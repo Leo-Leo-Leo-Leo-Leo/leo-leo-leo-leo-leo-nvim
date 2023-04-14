@@ -169,9 +169,9 @@
 "}}}
 " Styling {{{
   " Theme
-  " if (has("termguicolors"))
+  if (has("termguicolors"))
     set termguicolors
-  " endif
+  endif
 
   colorscheme shades_of_purple
   
@@ -199,11 +199,21 @@
   augroup END
 "}}}
 " Keybindings {{{
+  " Tab Backward in Insert Mode
+  inoremap <S-TAB> <C-d>
   " Save
   nnoremap <C-s> :w<CR>
   inoremap <C-s> <esc>:w<CR>
-  " Quit
-  nnoremap <C-q> :q<CR>
+  " Quit:  Delete Buffer, or quit vim if last buffer. Also closes nameless buffer
+  nnoremap <C-q> :call CloseWindow()<CR>
+  function! CloseWindow()
+    if tabpagenr('$') == 1 && winnr('$') == 1 || bufname('$') == ''
+      execute 'q'
+    else 
+      execute 'bd' 
+    endif
+  endfunction
+
   inoremap <C-q> <esc>:q<CR>
   " Search selected text
   vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -387,7 +397,7 @@
   " let g:asyncomplete_auto_completeopt = 0
 " }}}
 " Vimspector {{{
-  " let g:vimspector_bottombar_height=10
+  let g:vimspector_bottombar_height=10
 
   " sign define vimspectorBP text=o             texthl=WarningMsg
   " sign define vimspectorBPCond text=o?        texthl=WarningMsg
@@ -397,16 +407,16 @@
   " sign define vimspectorPCBP text=o>          texthl=MatchParen
   " sign define vimspectorCurrentThread text=>  texthl=MatchParen
   " sign define vimspectorCurrentFrame text=>   texthl=Special
-  "
-  " let g:vimspector_sign_priority = {
-  "       \    'vimspectorBP':         3,
-  "       \    'vimspectorBPCond':     2,
-  "       \    'vimspectorBPLog':      2,
-  "       \    'vimspectorBPDisabled': 1,
-  "       \    'vimspectorPC':         999,
-  "       \ }
 
-  " func! CustomiseUI()
+  let g:vimspector_sign_priority = {
+        \    'vimspectorBP':         3,
+        \    'vimspectorBPCond':     2,
+        \    'vimspectorBPLog':      2,
+        \    'vimspectorBPDisabled': 1,
+        \    'vimspectorPC':         999,
+  \ }
+
+  " function! CustomiseUI()
   "   call win_gotoid( g:vimspector_session_windows.code  )
   "   " Clear the existing WinBar created by Vimspector
   "   nunmenu WinBar
@@ -420,13 +430,13 @@
   "   nnoremenu WinBar.Restart :call vimspector#Restart()<CR>
   "   nnoremenu WinBar.Exit :call vimspector#Reset()<CR>
   " endfunction
-  "
+  
   " augroup MyVimspectorUICustomistaion
   "   autocmd!
   "   autocmd User VimspectorUICreated call s:CustomiseUI()
   " augroup END
 
-  "let g:vimspector_enable_mappings = 'HUMAN'
+  " let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
     nnoremap <Leader>d :call vimspector#Continue()<CR> "When debugging, continue. Otherwise start debugging. Also close nerdtree
@@ -481,29 +491,9 @@
   let g:cursorhold_updatetime = 200 
 " }}}
 " Dev-Icons{{{
-  " let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-  " let g:DevIconsEnableFoldersOpenClose = 1
-  " let g:DevIconsEnableFolderExtensionPatternMatching = 1
-
-  " let g:DevIconsDefaultFolderOpenSymbol=''
-  " let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol=''
-
-  " " Custom icons for file extensions
-  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
-  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
-  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ts'] = 'ﯤ'
-  " let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = 'ﬥ'
-  "
-  " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {} " needed
-  " let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.test.ts'] = 'ﭧ'
-  "
-  " " Custom icons for specific filenames
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['ormconfig.js'] = ''
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.env'] = 'ﭩ'
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.editorconfig'] = ''
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.npmrc'] = ''
-  " let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['src'] = ''
+  let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+  let g:DevIconsEnableFoldersOpenClose = 1
+  let g:DevIconsEnableFolderExtensionPatternMatching = 1
 " }}}
 " NERDTree {{{
   " enable line numbers
@@ -589,7 +579,7 @@
   " Git status
   nnoremap <Leader>gs :Git status<CR>
   " Git diff 
-  " nnoremap <Leader><S-g>d :Git diff<CR>
+  " nnoremap <Leader>gD :Git diff<CR>
   " Git diff split view on current buffer
   nnoremap <Leader>gd :Gdiffsplit<CR>
   " Git log
@@ -603,52 +593,6 @@
   
   " Create default mappings
   let g:NERDCreateDefaultMappings = 0
-
-  " Defaults Mappings {{{
-    "[count]<leader>cc |NERDCommenterComment|
-    " Comment out the current line or text selected in visual mode.
-    "
-    "[count]<leader>cn |NERDCommenterNested|
-    " Same as cc but forces nesting.
-    "
-    "[count]<leader>c<space> |NERDCommenterToggle|
-    " Toggles the comment state of the selected line(s). If the topmost selected line is commented, all selected lines are uncommented and vice versa.
-    "
-    "[count]<leader>cm |NERDCommenterMinimal|
-    " Comments the given lines using only one set of multipart delimiters.
-    "
-    "[count]<leader>ci |NERDCommenterInvert|
-    " Toggles the comment state of the selected line(s) individually.
-    "
-    "[count]<leader>cs |NERDCommenterSexy|
-    " Comments out the selected lines with a pretty block formatted layout.
-    "
-    "[count]<leader>cy |NERDCommenterYank|
-    " Same as cc except that the commented line(s) are yanked first.
-    "
-    "<leader>c$ |NERDCommenterToEOL|
-    " Comments the current line from the cursor to the end of line.
-    "
-    "<leader>cA |NERDCommenterAppend|
-    " Adds comment delimiters to the end of line and goes into insert mode between them.
-    "
-    "|NERDCommenterInsert|
-    " Adds comment delimiters at the current cursor position and inserts between. Disabled by default.
-    "
-    "<leader>ca |NERDCommenterAltDelims|
-    " Switches to the alternative set of delimiters.
-    "
-    "[count]<leader>cl |NERDCommenterAlignLeft [count]<leader>cb |NERDCommenterAlignBoth
-    " Same as |NERDCommenterComment| except that the delimiters are aligned down the left side (<leader>cl) or both sides (<leader>cb).
-    "
-    "[count]<leader>cu |NERDCommenterUncomment|
-    " Uncomments the selected line(s).
-  " }}}
-
-  " Custom Mappings {{{
-    nnoremap <LEADER>c :call NERDComment('0', 'toggle')<CR>
-    xmap <LEADER>c <plug>NERDCommenterToggle
-  " }}}
 
   " Add spaces after comment delimiters by default
   let g:NERDSpaceDelims = 1
@@ -670,6 +614,9 @@
 
   " Enable NERDCommenterToggle to check all selected lines is commented or not 
   let g:NERDToggleCheckAllLines = 1
+
+  nnoremap <LEADER>c :call NERDComment('0', 'toggle')<CR>
+  xmap <LEADER>c <plug>NERDCommenterToggle
 
 " }}}
 " Any-Fold {{{
