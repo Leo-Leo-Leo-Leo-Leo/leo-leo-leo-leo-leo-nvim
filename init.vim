@@ -153,11 +153,11 @@
   filetype plugin indent on       " allow auto-indenting depending on file type
 "}}}
 " Indentation {{{
-  set softtabstop=2               " see multiple spaces as tab-stops so <BS> does the right thing
-  set expandtab                   " converts tabs to white space
-  set shiftwidth=2                " width for auto-indents
   set autoindent                  " indent a new line the same amount as the line just typed
+  set shiftwidth=2                " width for auto-indents
   set tabstop=2                   " number of columns occupied by a tab
+  set expandtab                   " converts tabs to white space
+  set softtabstop=2               " see multiple spaces as tab-stops so <BS> does the right thing
   set cc=120                      " set an 80 column border for good coding style
 "}}}
 " Search & Highlighting {{{
@@ -198,12 +198,28 @@
     autocmd ColorScheme * highlight link ALEInfoSign    Identifier
   augroup END
 "}}}
+" Event Bindings {{{
+  function! LoadUserSession()
+    execute 'VimspectorLoadSession'
+  endfunction
+  autocmd VimEnter * call LoadUserSession()
+" 
+" }}}
 " Keybindings {{{
+" TODO: Remove plugin dependancies from here, or only bind them if the plugin
+" is loaded with if statememnts (something like that at least.)
+
   " Tab Backward in Insert Mode
   inoremap <S-TAB> <C-d>
   " Save
-  nnoremap <C-s> :w<CR>
-  inoremap <C-s> <esc>:w<CR>
+  nnoremap <C-s> :call SaveUserSession()<CR>
+  inoremap <C-s> <esc>:call SaveUserSession()<CR>
+
+  function! SaveUserSession()
+    execute 'VimspectorMkSession'
+    execute 'w'
+  endfunction
+
   " Quit:  Delete Buffer, or quit vim if last buffer. Also closes nameless buffer
   nnoremap <C-q> :call CloseWindow()<CR>
   function! CloseWindow()
@@ -554,22 +570,25 @@
   " move fzf search pop-up
   let g:fzf_layout = { 'down': '~40%'  }
   
-  " Search current buffer lines
+  " find current buffer lines
   nnoremap <Leader>fl :BLines<CR>
-  " Search all buffers lines
-  nnoremap <Leader>fo :Lines<CR> 
-  " Search for open buffer
-  nnoremap <Leader>fb :Buffer<CR>
-  " Search git diff
-  nnoremap <Leader>fd :GFiles?<CR>
-  " Search all files in directory
-  nnoremap <Leader>fa :Files<CR>
-  " Search snippets
-  nnoremap <Leader>fs :Snippets<CR>
-  " Search all marks in buffers
+  " find all marked lines in open buffers
   nnoremap <Leader>fm :Marks<CR>
-  " Search all file contents in directory
-  nnoremap <Leader>fe :Rg<CR>
+  " find all lines open buffers
+  nnoremap <Leader>fo :Lines<CR> 
+  " find all lines in directory
+  nnoremap <Leader>fa :Rg<CR>
+
+  " find open buffer
+  nnoremap <Leader>fb :Buffer<CR>
+  " find modified files
+  nnoremap <Leader>fd :GFiles?<CR>
+  " find all files
+  nnoremap <Leader>ff :Files<CR>
+  
+  " find snippets
+  nnoremap <Leader>fs :Snippets<CR>
+
 " }}}
 " Fugitive{{{
   " Git stage
