@@ -235,11 +235,11 @@
   nnoremap <C-q> :call CloseWindow()<CR>
   inoremap <C-q> <esc>:call CloseWindow()<CR>
   function! CloseWindow()
-    if tabpagenr('$') == 1 && winnr('$') == 1 || bufname('$') == ''
+    " if tabpagenr('$') == 1 && winnr('$') == 1 || bufname('$') == ''
       execute 'q'
-    else 
-      execute 'bd' 
-    endif
+    " else
+      " execute 'bd'
+    " endif
   endfunction
 
   " move line or visually selected block - alt+j/k
@@ -464,10 +464,10 @@
   " let g:vimspector_enable_mappings = 'HUMAN'
 
   " Debugging{{{
-    nnoremap <Leader>d :call vimspector#Continue()<CR>:NERDTreeClose<CR> "When debugging, continue. Otherwise start debugging. Also close nerdtree
-    nnoremap <Leader>r :call vimspector#Restart()<CR>	"Restart debugging with the same configuration.
-    nnoremap <Leader>p :call vimspector#Pause()<CR>	" Pause debuggee.
-    nnoremap <Leader>q :call vimspector#Stop()<CR>" Stop debugging.
+    nnoremap <Leader>d :call vimspector#Continue()<CR>
+    nnoremap <Leader>r :call vimspector#Restart()<CR>
+    nnoremap <Leader>p :call vimspector#Pause()<CR>
+    nnoremap <Leader>q :call vimspector#Stop()<CR>
     nnoremap <Leader><S-q> :VimspectorReset<CR>
   "}}}
   
@@ -532,8 +532,8 @@
   nnoremap <Leader>nn :NERDTreeFocus<CR>
  
   " Start NERDTree after vim, move the cursor to previous window.
-  autocmd VimEnter * NERDTree | wincmd p
-  autocmd BufWinEnter * silent! NERDTreeMirror
+  " autocmd VimEnter * NERDTree | wincmd p
+  " autocmd BufWinEnter * silent! NERDTreeMirror
 
   " Open the existing NERDTree on each new tab.
   " autocmd TabNew * silent! NERDTreeMirror | wincmd p
