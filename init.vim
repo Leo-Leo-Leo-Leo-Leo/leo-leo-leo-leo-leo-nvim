@@ -209,7 +209,7 @@
 " Event Bindings {{{
   autocmd VimEnter * call LoadUserSession()
   function! LoadUserSession()
-    execute 'VimspectorLoadSession'
+    " execute 'VimspectorLoadSession'
   endfunction
   " autocmd BufEnter * if bufname('$') != '' && exists('b:NERDTree') && !b:NERDTree.isTabTree() | e | endif
 " 
@@ -227,7 +227,7 @@
   inoremap <C-s> <esc>:call SaveUserSession()<CR>
 
   function! SaveUserSession()
-    execute 'VimspectorMkSession'
+    " execute 'VimspectorMkSession'
     execute 'w'
   endfunction
 
