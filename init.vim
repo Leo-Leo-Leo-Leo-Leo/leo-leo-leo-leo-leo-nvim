@@ -209,7 +209,15 @@
 " Event Bindings {{{
   autocmd VimEnter * call LoadUserSession()
   function! LoadUserSession()
-    " execute 'VimspectorLoadSession'
+    " silent! execute 'source Session.vim'
+  endfunction
+
+  " autocmd SessionLoadPost * VimspectorLoadSession
+
+  autocmd VimLeave * call SaveUserSession()
+  function! SaveUserSession()
+    " silent! execute 'mksession!'
+    " silent! execute 'VimspectorMkSession'
   endfunction
   " autocmd BufEnter * if bufname('$') != '' && exists('b:NERDTree') && !b:NERDTree.isTabTree() | e | endif
 " 
@@ -227,7 +235,6 @@
   inoremap <C-s> <esc>:call SaveUserSession()<CR>
 
   function! SaveUserSession()
-    " execute 'VimspectorMkSession'
     execute 'w'
   endfunction
 
@@ -265,6 +272,9 @@
   " move to next/previous tab
   nnoremap <silent> <s-h> gT
   nnoremap <silent> <s-l> gt
+  
+  vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+  vnoremap ?? y/\V<C-R>=escape(@",'/\')<CR><CR>
   " Clear Search
   nnoremap <silent> <Leader>/ :noh<CR>
  
@@ -495,8 +505,9 @@
     nnoremap <Leader>e eb<Plug>VimspectorBalloonEval
     xmap <Leader>e <Plug>VimspectorBalloonEval
 
-    nnoremap <Leader>w :VimspectorWatch<CR>
-    xmap <Leader>w :VimspectorWatch<CR>
+    nnoremap <Leader>w <S-b>vey:VimspectorWatch \V<C-R>=escape(@",'/\')<CR><CR>
+    vnoremap <Leader>w y:VimspectorWatch<CR> \V<C-R>=escape(@",'/\')<CR><CR>
+     
   "}}}
   
   " Windows{{{
@@ -586,7 +597,7 @@
   " find all lines open buffers
   nnoremap <Leader>fo :Lines<CR> 
   " find all lines in directory
-  nnoremap <Leader>fa :Rg<CR>
+  nnoremap <Leader>fe :Rg<CR>
 
   " find open buffer
   nnoremap <Leader>fb :Buffer<CR>
